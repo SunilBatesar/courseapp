@@ -9,11 +9,6 @@ import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-enum Profession {
-  Student,
-  Teacher;
-}
-
 class FirebaseFirestoreFunction {
   //  Call FirebaseFirestore
   final _firstore = FirebaseFirestore.instance;
@@ -24,11 +19,11 @@ class FirebaseFirestoreFunction {
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
-      final DocumentReference<Map<String, dynamic>> reference =
-          await _firstore.collection("user").add(model.tomap());
-      if (reference.id.isNotEmpty) {
-        provider.setUserData(UserModel.fromjson(model.tomap(), reference.id));
-      }
+      await _firstore.collection("user").doc(model.uid).set(model.tomap()).then(
+        (value) {
+          provider.setUserData(UserModel.fromjson(model.tomap(), model.uid));
+        },
+      );
     } catch (e) {
       debugPrint(e.toString());
     } finally {
@@ -92,7 +87,20 @@ class FirebaseFirestoreFunction {
               ? await ref
                   .where('userid', isEqualTo: userProvider.userdata.profession)
                   .get()
-              : await ref.get();
+                  .then(
+                  (value) async {
+                    for (var val in value.docs) {
+                      await getClassFilterData(val.id, context);
+                    }
+                    return value;
+                  },
+                )
+              : await ref.get().then(
+                  (value) async {
+                    await getClassDataFirestore(context);
+                    return value;
+                  },
+                );
       if (snapshot.docs.isNotEmpty) {
         final List<CourseModel> data = snapshot.docs
             .map((e) => CourseModel.fromjson(e.data(), e.id))
@@ -137,6 +145,25 @@ class FirebaseFirestoreFunction {
             .map((e) => ClassModel.fromjson(e.data(), e.id))
             .toList();
         provider.setclassData(data);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      loading.setloading(false);
+    }
+  }
+
+  // Get Class Filter Data
+  Future getClassFilterData(String? id, BuildContext context) async {
+    final provider = Provider.of<ClassViewmodel>(context, listen: false);
+    final loading = Provider.of<BoolSetter>(context, listen: false);
+    loading.setloading(true);
+    try {
+      final snapshot = await _firstore.collection("class").doc(id).get();
+      if (snapshot.exists) {
+        final ClassModel data =
+            ClassModel.fromjson(snapshot.data()!, snapshot.id);
+        provider.addclassData(data);
       }
     } catch (e) {
       debugPrint(e.toString());

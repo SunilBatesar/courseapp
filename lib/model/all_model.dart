@@ -1,5 +1,6 @@
 // User Model
 import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
+import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class UserModel {
       this.profession,
       this.couresesid});
 
-  static checkIsStudent(BuildContext context) {
+  static bool checkIsStudent(BuildContext context) {
     final userProvider = Provider.of<UserViewModel>(context, listen: false);
     return userProvider.userdata.profession == Profession.Student;
   }

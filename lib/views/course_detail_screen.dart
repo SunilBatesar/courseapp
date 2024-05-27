@@ -1,6 +1,7 @@
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/services/app_services.dart';
+import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -214,7 +215,11 @@ class CourseDetailScreen extends StatelessWidget {
             Gap(20.w),
             Expanded(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  UserModel.checkIsStudent(context)
+                      ? null
+                      : Navigator.pushNamed(context, RouteName.addCourseScreen);
+                },
                 child: Container(
                   height: 60.h,
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -225,7 +230,9 @@ class CourseDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Start Learning",
+                        UserModel.checkIsStudent(context)
+                            ? "Start Learning"
+                            : "Coruse Edit",
                         style: AppTextTheme.fs18Medium
                             .copyWith(color: AppColor.white),
                       ),

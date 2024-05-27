@@ -1,5 +1,4 @@
 import 'package:courses_app/components/style_seet.dart';
-import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +21,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   nextScreen() async {
-    if(!await rebuild()) return;
-    await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
-    await FirebaseFirestoreFunction().getClassDataFirestore(context);
+    if (!await rebuild()) return;
+
     Future.delayed(const Duration(milliseconds: 20), () {
       Navigator.pushNamed(context, RouteName.loginScreen);
     });

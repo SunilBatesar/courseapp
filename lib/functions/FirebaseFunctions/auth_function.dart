@@ -23,7 +23,8 @@ class AuthFunction {
           await _auth.createUserWithEmailAndPassword(
               email: model.email!, password: password);
       if (usercredential.user!.uid.isNotEmpty) {
-        await FirebaseFirestoreFunction().setUserDataFirestore(model, context);
+        await FirebaseFirestoreFunction().setUserDataFirestore(
+            model.copyWith(uid: usercredential.user!.uid), context);
         provider.setUserData(model.copyWith(uid: usercredential.user!.uid));
         Navigator.pushNamedAndRemoveUntil(
           context,
