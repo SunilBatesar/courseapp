@@ -1,0 +1,52 @@
+[
+    {
+        "id": "Course_1",
+        "name": "Figma Master Class Design",
+        "time": "4",
+        "ownername": "Richard Wu",
+        "ownerimage": "assets/images/teacher_1.jpg",
+        "image": "assets/images/class_2.jpg",
+        "studentimage": [
+            "assets/images/student_1.png",
+            "assets/images/student_2.png",
+            "assets/images/student_3.jpg",
+            "assets/images/student_1.png",
+            "assets/images/student_3.jpg"
+        ],
+        "price": "9",
+        "coursetype": "Design",
+        "sections": "13"
+    },
+    {
+        "id": "Course_2",
+        "name": "Math Class Design",
+        "time": "1",
+        "ownername": "Rahul",
+        "ownerimage": "assets/images/teacher_2.jpg",
+        "image": "assets/images/class_1.jpg",
+        "studentimage": [
+            "assets/images/student_1.png",
+            "assets/images/student_2.png",
+            "assets/images/student_3.jpg",
+            "assets/images/student_1.png"
+        ],
+        "price": "3",
+        "coursetype": "Design",
+        "sections": "3"
+    },
+    {
+        "id": "Course_2",
+        "name": "Dart Master Class",
+        "time": "8",
+        "ownername": "Ram",
+        "ownerimage": "assets/images/teacher_3.jpg",
+        "image": "assets/images/class_3.png",
+        "studentimage": [
+            "assets/images/student_1.png",
+            "assets/images/student_2.png"
+        ],
+        "price": "5",
+        "coursetype": "3D Modeling",
+        "sections": "16"
+    }
+]
