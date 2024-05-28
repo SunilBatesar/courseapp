@@ -30,6 +30,9 @@ class _SingnupScreenState extends State<SingnupScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _dateofBirthController = TextEditingController();
+  final _phonenumberController = TextEditingController();
+  final _addressController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +80,28 @@ class _SingnupScreenState extends State<SingnupScreen> {
                         text: "Password",
                         controller: _passwordController,
                         validator: (v) => AppValidator.passwordValidator(v),
+                      ),
+                      Gap(20.h),
+                      CommonTextField(
+                        text: "Date of Birth",
+                        keyboardtype: TextInputType.datetime,
+                        controller: _dateofBirthController,
+                        validator: (v) =>
+                            AppValidator.textValidator(v, "Date of Birth"),
+                      ),
+                      Gap(20.h),
+                      CommonTextField(
+                        text: "Phone Number",
+                        keyboardtype: TextInputType.phone,
+                        controller: _phonenumberController,
+                        validator: (v) => AppValidator.phoneNumberValidator(v),
+                      ),
+                      Gap(20.h),
+                      CommonTextField(
+                        text: "Address",
+                        controller: _addressController,
+                        validator: (v) =>
+                            AppValidator.textValidator(v, "Address"),
                       ),
                     ],
                   )),
@@ -140,6 +165,9 @@ class _SingnupScreenState extends State<SingnupScreen> {
           UserModel().copyWith(
               name: _nameController.text.trim(),
               email: _emailController.text.trim(),
+              dateofBirth: _dateofBirthController.text.trim(),
+              phonenumber: int.parse(_phonenumberController.text.trim()),
+              address: _addressController.text.trim(),
               profession: professionValue),
           _passwordController.text.trim(),
           context);

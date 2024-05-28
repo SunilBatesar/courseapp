@@ -52,7 +52,7 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       CommonTextField(
-                        text: "Email",
+                        text: "Email",keyboardtype: TextInputType.emailAddress,
                         controller: _emailController,
                         validator: (v) => AppValidator.emailValidator(v),
                       ),

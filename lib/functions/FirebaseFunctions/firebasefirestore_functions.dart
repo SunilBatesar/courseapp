@@ -50,6 +50,30 @@ class FirebaseFirestoreFunction {
     }
   }
 
+  // User Data Update
+
+  Future<void> updateDataFirestore(
+      UserModel model, BuildContext context) async {
+    final provider = Provider.of<UserViewModel>(context, listen: false);
+    final loading = Provider.of<BoolSetter>(context, listen: false);
+    loading.setloading(true);
+    try {
+      await _firstore
+          .collection("user")
+          .doc(model.uid)
+          .update(model.tomap())
+          .then(
+        (value) {
+          provider.setUserData(model);
+        },
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      loading.setloading(false);
+    }
+  }
+
   // Set Courses Firestore
   Future<String> setCourseDataFirestore(
       CourseModel model, BuildContext context) async {

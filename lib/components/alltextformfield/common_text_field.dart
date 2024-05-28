@@ -9,6 +9,7 @@ class CommonTextField extends StatelessWidget {
   final Function(String)? validator, fieldSubmitted;
   final FocusNode? focusnode;
   final int? maxlines;
+  final TextInputType? keyboardtype;
   const CommonTextField(
       {super.key,
       required this.text,
@@ -17,6 +18,7 @@ class CommonTextField extends StatelessWidget {
       this.controller,
       this.validator,
       this.fieldSubmitted,
+      this.keyboardtype,
       this.focusnode,
       this.maxlines});
 
@@ -28,6 +30,7 @@ class CommonTextField extends StatelessWidget {
           fieldSubmitted != null ? (value) => fieldSubmitted!(value) : null,
       controller: controller,
       focusNode: focusnode,
+      keyboardType: keyboardtype,
       maxLines: maxlines ?? 1,
       decoration: InputDecoration(
           prefixIcon: prefixicon == null

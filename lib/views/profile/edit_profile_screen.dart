@@ -5,6 +5,7 @@ import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/functions/imagepicker_function.dart';
+import 'package:courses_app/utils/validator.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +20,8 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  // GlobalKey
+  final _key = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _dateofBirthController = TextEditingController();
   final _phonenumberController = TextEditingController();
@@ -34,10 +37,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   addValueAuto() {
     final user = Provider.of<UserViewModel>(context, listen: false).userdata;
     _nameController.text = user.name!;
-    // _dateofBirthController.text = user.dateofBirth ?? "";
+    _dateofBirthController.text =
+        user.dateofBirth!.isEmpty || user.dateofBirth == null
+            ? ""
+            : user.dateofBirth!;
     _phonenumberController.text =
-        user.phonenumber == null ? "" : user.phonenumber.toString();
-    // _addressController.text = user.address!;
+        user.phonenumber == null || user.phonenumber == 0
+            ? ""
+            : user.phonenumber.toString();
+    _addressController.text =
+        user.address!.isEmpty || user.address == null ? "" : user.address!;
   }
 
   @override
@@ -87,31 +96,48 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                   )),
               Gap(20.h),
-              CommonTextField(
-                text: "Name",
-                controller: _nameController,
-              ),
-              Gap(20.h),
-              CommonTextField(
-                text: "Date of Birth",
-                controller: _dateofBirthController,
-              ),
-              Gap(20.h),
-              CommonTextField(
-                text: "Phone Number",
-                controller: _phonenumberController,
-              ),
-              Gap(20.h),
-              CommonTextField(
-                text: "Address",
-                controller: _addressController,
+              Form(
+                key: _key,
+                child: Column(
+                  children: [
+                    CommonTextField(
+                      text: "Name",
+                      controller: _nameController,
+                      validator: (v) => AppValidator.textValidator(v, "Name"),
+                    ),
+                    Gap(20.h),
+                    CommonTextField(
+                      text: "Date of Birth",
+                      keyboardtype: TextInputType.datetime,
+                      controller: _dateofBirthController,
+                      validator: (v) =>
+                          AppValidator.textValidator(v, "Date of Birth"),
+                    ),
+                    Gap(20.h),
+                    CommonTextField(
+                      text: "Phone Number",
+                      keyboardtype: TextInputType.phone,
+                      controller: _phonenumberController,
+                      validator: (v) => AppValidator.phoneNumberValidator(v),
+                    ),
+                    Gap(20.h),
+                    CommonTextField(
+                      text: "Address",
+                      controller: _addressController,
+                      validator: (v) =>
+                          AppValidator.textValidator(v, "Address"),
+                    ),
+                  ],
+                ),
               ),
               Gap(20.h),
               Row(
                 children: [
                   AppButton(
                     title: "Save",
-                    onPressed: () {},
+                    onPressed: () {
+                      _getValidText(context);
+                    },
                     isExpanded: true,
                   ),
                 ],
@@ -121,5 +147,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       )),
     );
+  }
+
+  _getValidText(BuildContext context) {
+    if (_key.currentState!.validate()) {}
   }
 }
