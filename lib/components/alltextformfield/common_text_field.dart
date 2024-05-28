@@ -6,7 +6,8 @@ class CommonTextField extends StatelessWidget {
   final String text;
   final IconData? suffixicon, prefixicon;
   final TextEditingController? controller;
-  final Function(String)? validator, fieldSubmitted;
+  final Function(String)? fieldSubmitted;
+  final Function(String)? validator;
   final FocusNode? focusnode;
   final int? maxlines;
   final TextInputType? keyboardtype;
@@ -21,7 +22,6 @@ class CommonTextField extends StatelessWidget {
       this.keyboardtype,
       this.focusnode,
       this.maxlines});
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(

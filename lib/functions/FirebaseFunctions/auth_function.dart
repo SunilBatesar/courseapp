@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:courses_app/components/SharedPreferences/usersharedpreferences.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
@@ -26,6 +27,9 @@ class AuthFunction {
         await FirebaseFirestoreFunction().setUserDataFirestore(
             model.copyWith(uid: usercredential.user!.uid), context);
         provider.setUserData(model.copyWith(uid: usercredential.user!.uid));
+        await UserSharedPreferences()
+            .setuserSharedPrefs(usercredential.user!.uid);
+            await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
         Navigator.pushNamedAndRemoveUntil(
             context, RouteName.appBottomNavigationBar, (route) => false);
       }
@@ -52,6 +56,9 @@ class AuthFunction {
             email: email, password: password);
         provider.setUserData(UserModel.fromjson(
             snapshot.docs.first.data(), snapshot.docs.first.id));
+        await UserSharedPreferences()
+            .setuserSharedPrefs(snapshot.docs.first.id);
+        await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
         Navigator.pushNamedAndRemoveUntil(
           context,
           RouteName.appBottomNavigationBar,
@@ -70,9 +77,10 @@ class AuthFunction {
 
   //  Logout User
   logout(BuildContext context) {
-    _auth.signOut().then(
-          (value) => Navigator.pushNamedAndRemoveUntil(
-              context, RouteName.loginScreen, (route) => false),
-        );
+    _auth.signOut().then((value) async {
+      await UserSharedPreferences().removUserSharedPrefs();
+      Navigator.pushNamedAndRemoveUntil(
+          context, RouteName.loginScreen, (route) => false);
+    });
   }
 }

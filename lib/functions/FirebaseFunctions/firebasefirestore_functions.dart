@@ -32,7 +32,7 @@ class FirebaseFirestoreFunction {
   }
 
   // Get User Data
-  Future getUserData(String uid, BuildContext context) async {
+  Future<void> getUserData(String uid, BuildContext context) async {
     final provider = Provider.of<UserViewModel>(context, listen: false);
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);

@@ -1,7 +1,7 @@
 import 'package:courses_app/main.dart';
 
 class UserSharedPreferences {
-  setuserSharedPrefs(String value) async {
+  Future setuserSharedPrefs(String value) async {
     await sharedPrefs.setString("userid", value);
   }
 

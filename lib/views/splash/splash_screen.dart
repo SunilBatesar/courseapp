@@ -1,4 +1,6 @@
+import 'package:courses_app/components/SharedPreferences/usersharedpreferences.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +24,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextScreen() async {
     if (!await rebuild()) return;
-
-    Future.delayed(const Duration(milliseconds: 20), () {
-      Navigator.pushNamed(context, RouteName.loginScreen);
+    final String id = UserSharedPreferences().getuserSharedPrefs();
+    Future.delayed(const Duration(milliseconds: 2), () async {
+      if (id.isNotEmpty) {
+        await FirebaseFirestoreFunction().getUserData(id, context);
+        await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
+        Navigator.pushNamed(context, RouteName.appBottomNavigationBar);
+      } else {
+        Navigator.pushNamed(context, RouteName.loginScreen);
+      }
     });
   }
 

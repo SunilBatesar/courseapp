@@ -3,7 +3,6 @@ import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/components/tile/courses_tile.dart';
 import 'package:courses_app/components/tile/loding_tile.dart';
 import 'package:courses_app/data/localdata.dart';
-import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
@@ -39,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getdata() async {
     if (!await rebuild()) return;
-    await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
     final provider = Provider.of<MaincourseViewModel>(context, listen: false);
     provider.addcourseAndclass(context);
     bottonValuetype = LocalData.filterlist.first["type"];
@@ -66,10 +64,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final loading = Provider.of<BoolSetter>(context).loading;
     final userData = Provider.of<UserViewModel>(context);
     final maindata = Provider.of<MaincourseViewModel>(context, listen: false);
-
     final q = maindata.maincoursedata
         .where((element) =>
-            element.coursemodel.coursetype!.toLowerCase() == bottonValuetype.toLowerCase())
+            element.coursemodel.coursetype!.toLowerCase() ==
+            bottonValuetype.toLowerCase())
         .toList();
     filterdataList = searchOnchanged.isEmpty
         ? q
