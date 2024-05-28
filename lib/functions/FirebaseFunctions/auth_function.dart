@@ -27,10 +27,7 @@ class AuthFunction {
             model.copyWith(uid: usercredential.user!.uid), context);
         provider.setUserData(model.copyWith(uid: usercredential.user!.uid));
         Navigator.pushNamedAndRemoveUntil(
-          context,
-          RouteName.appBottomNavigationBar,
-          (route) => false,
-        );
+            context, RouteName.appBottomNavigationBar, (route) => false);
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -69,5 +66,13 @@ class AuthFunction {
     } finally {
       loading.setloading(false);
     }
+  }
+
+  //  Logout User
+  logout(BuildContext context) {
+    _auth.signOut().then(
+          (value) => Navigator.pushNamedAndRemoveUntil(
+              context, RouteName.loginScreen, (route) => false),
+        );
   }
 }

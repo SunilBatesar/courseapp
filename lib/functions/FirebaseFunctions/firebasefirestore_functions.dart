@@ -116,7 +116,7 @@ class FirebaseFirestoreFunction {
 
   // Set Class Firestore
   Future setClassDataFirestore(ClassModel model, BuildContext context) async {
-    final provider = Provider.of<ClassViewmodel>(context, listen: false);
+    final provider = Provider.of<ClassViewModel>(context, listen: false);
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
@@ -134,7 +134,7 @@ class FirebaseFirestoreFunction {
 
   // Get Class Data
   Future getClassDataFirestore(BuildContext context) async {
-    final provider = Provider.of<ClassViewmodel>(context, listen: false);
+    final provider = Provider.of<ClassViewModel>(context, listen: false);
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
@@ -155,7 +155,7 @@ class FirebaseFirestoreFunction {
 
   // Get Class Filter Data
   Future getClassFilterData(String? id, BuildContext context) async {
-    final provider = Provider.of<ClassViewmodel>(context, listen: false);
+    final provider = Provider.of<ClassViewModel>(context, listen: false);
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {

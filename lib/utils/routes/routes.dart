@@ -31,7 +31,7 @@ class AppRoutes {
         );
       case RouteName.courseDetailScreen:
         {
-          dynamic arguments = settings.arguments as CourseModel;
+          dynamic arguments = settings.arguments as MainCoursesModel;
           return MaterialPageRoute(
               builder: (context) => CourseDetailScreen(
                     model: arguments,
@@ -58,7 +58,7 @@ class AppRoutes {
         );
       case RouteName.editProfileScreen:
         return MaterialPageRoute(
-          builder: (context) => EditProfileScreen(),
+          builder: (context) => const EditProfileScreen(),
         );
       // Course  Route
       case RouteName.addCourseScreen:

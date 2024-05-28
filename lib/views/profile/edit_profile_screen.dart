@@ -34,10 +34,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   addValueAuto() {
     final user = Provider.of<UserViewModel>(context, listen: false).userdata;
     _nameController.text = user.name!;
-    _dateofBirthController.text = user.dateofBirth!;
+    // _dateofBirthController.text = user.dateofBirth ?? "";
     _phonenumberController.text =
-        user.phonenumber == 0 ? "" : user.phonenumber.toString();
-    _addressController.text = user.address!;
+        user.phonenumber == null ? "" : user.phonenumber.toString();
+    // _addressController.text = user.address!;
   }
 
   @override

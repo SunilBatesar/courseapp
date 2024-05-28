@@ -1,5 +1,4 @@
 // User Model
-import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -85,6 +84,14 @@ class UserModel {
         couresesid = ((json["couresesid"] ?? []) as List)
             .map((e) => e.toString())
             .toList();
+}
+
+// Main Courses Model
+class MainCoursesModel {
+  CourseModel coursemodel;
+  List<ClassModel> classmodel;
+
+  MainCoursesModel({required this.coursemodel, required this.classmodel});
 }
 
 //  Course Model

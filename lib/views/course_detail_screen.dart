@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 class CourseDetailScreen extends StatelessWidget {
-  final CourseModel model;
+  final MainCoursesModel model;
   const CourseDetailScreen({super.key, required this.model});
 
   @override
@@ -29,7 +29,7 @@ class CourseDetailScreen extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20.r),
                         child: Image.network(
-                          model.images!.first,
+                          model.coursemodel.images!.first,
                           height: 240.h,
                           width: AppServices.screenWidth(context),
                           fit: BoxFit.fill,
@@ -67,35 +67,37 @@ class CourseDetailScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: -22.sp,
-                        left: 10.w,
-                        child: Container(
-                          height: 50.h,
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.r),
-                              color: AppColor.white),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // ClipRRect(
-                              //     borderRadius: BorderRadius.circular(1000),
-                              //     child: Image.asset(
-                              //       model.ownerimage!,
-                              //       fit: BoxFit.contain,
-                              //       width: 40.sp,
-                              //       height: 40.sp,
-                              //     )),
-                              Gap(10.w),
-                              // Text(
-                              //   model.ownername!,
-                              //   style: AppTextTheme.fs14Normal,
-                              // ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      UserModel.checkIsStudent(context)
+                          ? Positioned(
+                              bottom: -22.sp,
+                              left: 10.w,
+                              child: Container(
+                                height: 50.h,
+                                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    color: AppColor.white),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // ClipRRect(
+                                    //     borderRadius: BorderRadius.circular(1000),
+                                    //     child: Image.asset(
+                                    //       model.ownerimage!,
+                                    //       fit: BoxFit.contain,
+                                    //       width: 40.sp,
+                                    //       height: 40.sp,
+                                    //     )),
+                                    Gap(10.w),
+                                    // Text(
+                                    //   model.ownername!,
+                                    //   style: AppTextTheme.fs14Normal,
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
                       Positioned(
                         right: 10.w,
                         bottom: -22.sp,
@@ -116,7 +118,7 @@ class CourseDetailScreen extends StatelessWidget {
                               ),
                               Gap(5.w),
                               Text(
-                                "\$${model.price}",
+                                "\$${model.coursemodel.price}",
                                 style: AppTextTheme.fs16Medium,
                               ),
                             ],
@@ -127,7 +129,7 @@ class CourseDetailScreen extends StatelessWidget {
                   ),
                   Gap(30.h),
                   Text(
-                    model.name!,
+                    model.coursemodel.name!,
                     style: AppTextTheme.fs25SemiBold
                         .copyWith(color: AppColor.raisinBlack),
                   ),
@@ -182,7 +184,7 @@ class CourseDetailScreen extends StatelessWidget {
                   ),
                   Gap(10.h),
                   Text(
-                    model.description!,
+                    model.coursemodel.description!,
                     style: AppTextTheme.fs16Medium
                         .copyWith(color: AppColor.frenchGray),
                   ),

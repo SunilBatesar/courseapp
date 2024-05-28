@@ -1,6 +1,7 @@
 import 'package:courses_app/components/alltextformfield/searchtextfield.dart';
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/components/tile/courses_tile.dart';
+import 'package:courses_app/components/tile/loding_tile.dart';
 import 'package:courses_app/data/localdata.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/model/all_model.dart';
@@ -8,13 +9,13 @@ import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/class_viewmodel.dart';
 import 'package:courses_app/view_model/course_viewmodel.dart';
+import 'package:courses_app/view_model/maincourse_viewmodel.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int buttonIndex = 0;
   String bottonValuetype = "";
   String searchOnchanged = "";
-  List<CourseModel> filterdataList = [];
+  List<MainCoursesModel> filterdataList = [];
 
   @override
   void initState() {
@@ -39,6 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
   getdata() async {
     if (!await rebuild()) return;
     await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
+    final provider = Provider.of<MaincourseViewModel>(context, listen: false);
+    provider.addcourseAndclass(context);
     bottonValuetype = LocalData.filterlist.first["type"];
     setState(() {});
   }
@@ -59,18 +62,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final courseprovider = Provider.of<CourseViewModel>(context);
-    final classprovider = Provider.of<ClassViewmodel>(context);
+    final classprovider = Provider.of<ClassViewModel>(context);
     final loading = Provider.of<BoolSetter>(context).loading;
     final userData = Provider.of<UserViewModel>(context);
+    final maindata = Provider.of<MaincourseViewModel>(context, listen: false);
 
-    final q = courseprovider.coursedata
+    final q = maindata.maincoursedata
         .where((element) =>
-            element.coursetype!.toLowerCase() == bottonValuetype.toLowerCase())
+            element.coursemodel.coursetype!.toLowerCase() == bottonValuetype.toLowerCase())
         .toList();
     filterdataList = searchOnchanged.isEmpty
         ? q
         : q
-            .where((e) => e.name!
+            .where((e) => e.coursemodel.name!
                 .toLowerCase()
                 .trim()
                 .contains(searchOnchanged.toLowerCase().trim()))
@@ -107,74 +111,52 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+                Gap(30.h),
+                SearchTextField(
+                  text: "Figma...",
+                  icon: Icons.search,
+                  onchanged: (v) {
+                    setState(() {
+                      searchOnchanged = v;
+                    });
+                  },
+                ),
+                Gap(10.h),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                        LocalData.filterlist.length,
+                        (index) => Padding(
+                              padding: EdgeInsets.only(right: 15.w),
+                              child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      buttonIndex = index;
+                                      bottonValuetype =
+                                          (LocalData.filterlist[index]["type"])
+                                              .toString();
+                                    });
+                                  },
+                                  style: TextButton.styleFrom(
+                                      backgroundColor: buttonIndex == index
+                                          ? AppColor.raisinBlack
+                                          : AppColor.white),
+                                  child: Text(
+                                    LocalData.filterlist[index]["title"],
+                                    style: AppTextTheme.fs14Medium.copyWith(
+                                        color: buttonIndex == index
+                                            ? AppColor.white
+                                            : AppColor.raisinBlack),
+                                  )),
+                            )),
+                  ),
+                ),
+                Gap(20.h),
                 loading
-                    ? Center(
-                        child: SizedBox(
-                        width: 200.0,
-                        height: 100.0,
-                        child: Shimmer.fromColors(
-                          baseColor: Colors.red,
-                          highlightColor: Colors.yellow,
-                          child: const Text(
-                            'Shimmer',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 40.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ))
+                    ? const LodingTile()
                     : Column(
                         children: [
-                          Gap(30.h),
-                          SearchTextField(
-                            text: "Figma...",
-                            icon: Icons.search,
-                            onchanged: (v) {
-                              setState(() {
-                                searchOnchanged = v;
-                              });
-                            },
-                          ),
-                          Gap(10.h),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: List.generate(
-                                  LocalData.filterlist.length,
-                                  (index) => Padding(
-                                        padding: EdgeInsets.only(right: 15.w),
-                                        child: TextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                buttonIndex = index;
-                                                bottonValuetype =
-                                                    (LocalData.filterlist[index]
-                                                            ["type"])
-                                                        .toString();
-                                              });
-                                            },
-                                            style: TextButton.styleFrom(
-                                                backgroundColor:
-                                                    buttonIndex == index
-                                                        ? AppColor.raisinBlack
-                                                        : AppColor.white),
-                                            child: Text(
-                                              LocalData.filterlist[index]
-                                                  ["title"],
-                                              style: AppTextTheme.fs14Medium
-                                                  .copyWith(
-                                                      color: buttonIndex ==
-                                                              index
-                                                          ? AppColor.white
-                                                          : AppColor
-                                                              .raisinBlack),
-                                            )),
-                                      )),
-                            ),
-                          ),
-                          Gap(20.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -219,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     "No Class",
                                     style: AppTextTheme.fs20SemiBold,
                                   ),
-                                )
+                                ),
                         ],
                       ),
               ],

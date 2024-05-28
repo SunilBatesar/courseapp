@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AddCourseScreen extends StatefulWidget {
@@ -197,10 +196,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                                 .addimageStorage(File(fileX.path), context);
                             imageURLlist.add(url);
                           }
-                          final DateTime now = DateTime.now();
-                          final String datetimenow =
-                              DateFormat("yMMMMEEEEd").format(now);
-
+                          final DateTime datetimenow = DateTime.now();
                           final CourseModel coursedata = CourseModel().copyWith(
                               name: _nameController.text.trim(),
                               duration: _durationController.text.trim(),
@@ -208,7 +204,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                               price: int.parse(_priceController.text.trim()),
                               description: _descriptionController.text.trim(),
                               coursetype: coursetypeValue,
-                              datetime: datetimenow,
+                              datetime: datetimenow.toString(),
                               images: imageURLlist,
                               userid: user.uid);
                           await FirebaseFirestoreFunction()

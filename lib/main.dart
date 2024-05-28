@@ -5,6 +5,7 @@ import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/class_viewmodel.dart';
 import 'package:courses_app/view_model/course_viewmodel.dart';
+import 'package:courses_app/view_model/maincourse_viewmodel.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,10 +28,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-        create: (context) => CourseViewModel(),
+          create: (context) => MaincourseViewModel(),
         ),
         ChangeNotifierProvider(
-        create: (context) => ClassViewmodel(),
+          create: (context) => CourseViewModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ClassViewModel(),
         ),
         ChangeNotifierProvider(
           create: (context) => UserViewModel(),

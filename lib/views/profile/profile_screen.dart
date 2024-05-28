@@ -1,5 +1,6 @@
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/data/localdata.dart';
+import 'package:courses_app/functions/FirebaseFunctions/auth_function.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class ProfileScreen extends StatelessWidget {
       case "Aboutus":
         return;
       case "Log out":
-        return;
+        return AuthFunction().logout(context);
       default:
     }
   }
