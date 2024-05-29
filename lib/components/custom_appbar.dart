@@ -4,14 +4,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomAppbar extends AppBar {
   final BuildContext context;
-  CustomAppbar({super.key, super.title, required this.context});
+  CustomAppbar({
+    super.key,
+    super.title,
+    required this.context,
+    super.automaticallyImplyLeading,
+  });
 
   @override
-  Widget? get leading => IconButton(
-      onPressed: () {
-        Navigator.pop(context);
-      },
-      icon: const Icon(Icons.arrow_back_ios));
+  Widget? get leading => automaticallyImplyLeading
+      ? IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios))
+      : null;
 
   @override
   Color? get backgroundColor => Colors.transparent;

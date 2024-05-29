@@ -1,6 +1,7 @@
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:courses_app/views/appbottomnavigationbar.dart';
+import 'package:courses_app/views/BottomNavigationbar/appbottomnavigationbar.dart';
+import 'package:courses_app/views/BottomNavigationbar/user_type_screen.dart';
 import 'package:courses_app/views/auth/login_screen.dart';
 import 'package:courses_app/views/auth/singnup_screen.dart';
 import 'package:courses_app/views/chart_screen.dart';
@@ -74,6 +75,11 @@ class AppRoutes {
             ),
           );
         }
+      // BottomNavigationbar  Route
+      case RouteName.userTypeScreen:
+        return MaterialPageRoute(
+          builder: (context) => const UserTypeScreen(),
+        );
 
       default:
         return MaterialPageRoute(

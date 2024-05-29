@@ -18,7 +18,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddCourseScreen extends StatefulWidget {
-  const AddCourseScreen({super.key});
+  final bool isbool;
+  const AddCourseScreen({
+    super.key,
+    this.isbool = false,
+  });
 
   @override
   State<AddCourseScreen> createState() => _AddCourseScreenState();
@@ -46,7 +50,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     }
     setState(() {});
   }
-
+  
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserViewModel>(context).userdata;
@@ -55,6 +59,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
       appBar: CustomAppbar(
         context: context,
         title: const Text("Course"),
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
           child: SingleChildScrollView(

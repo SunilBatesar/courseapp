@@ -1,6 +1,6 @@
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/views/BottomNavigationbar/user_type_screen.dart';
 import 'package:courses_app/views/chart_screen.dart';
-import 'package:courses_app/views/course_screens/add_course_screen.dart';
 import 'package:courses_app/views/home/home_screen.dart';
 import 'package:courses_app/views/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   List<Widget> screens = [
     const HomeScreen(),
     const ChartScreen(),
-    const AddCourseScreen(),
+    const UserTypeScreen(),
     const ProfileScreen(),
   ];
   @override
@@ -59,7 +59,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
                     label: ""),
                 BottomNavigationBarItem(
                     icon: Icon(
-                      Icons.dark_mode,
+                      Icons.menu_book_outlined,
                       size: 24.sp,
                     ),
                     label: ""),

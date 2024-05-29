@@ -24,9 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextScreen() async {
     if (!await rebuild()) return;
-    final String id = UserSharedPreferences().getuserSharedPrefs();
+    final id = UserSharedPreferences().getuserSharedPrefs();
     Future.delayed(const Duration(milliseconds: 2), () async {
-      if (id.isNotEmpty) {
+      if (id != null) {
         await FirebaseFirestoreFunction().getUserData(id, context);
         await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
         Navigator.pushNamed(context, RouteName.appBottomNavigationBar);

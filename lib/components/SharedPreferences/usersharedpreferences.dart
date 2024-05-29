@@ -5,8 +5,8 @@ class UserSharedPreferences {
     await sharedPrefs.setString("userid", value);
   }
 
-  String getuserSharedPrefs() {
-    return sharedPrefs.getString("userid").toString();
+  dynamic getuserSharedPrefs() {
+    return sharedPrefs.getString("userid");
   }
 
   Future<void> removUserSharedPrefs() async {

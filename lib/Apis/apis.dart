@@ -1,10 +1,11 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-// class Apis {
-//   //  Call FirebaseFirestore
-//   final FirebaseFirestore _firstore = FirebaseFirestore.instance;
+class Apis {
+  final FirebaseFirestore _firstore = FirebaseFirestore.instance;
+  //  Call FirebaseFirestore
 
-//   final usereference = _firstore.collection("user");
-//   DocumentReference<Map<String, dynamic>> userdoc(String? id) =>
-//       usereference.doc(id);
-// }
+  dynamic get usereference => _firstore.collection("user");
+
+  DocumentReference<Map<String, dynamic>> userdoc(String? id) =>
+      usereference.doc(id);
+}

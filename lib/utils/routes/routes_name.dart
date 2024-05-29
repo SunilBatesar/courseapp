@@ -15,5 +15,7 @@ class RouteName {
   // ---- Add Course Screen Route Name ------
   static const String addCourseScreen = "AddCourseScreen";
   static const String addClassScreen = "AddClassScreen";
+  // ---- BottomNavigationbar Route Name ------
+  static const String userTypeScreen = "UserTypeScreen";
 
 }
