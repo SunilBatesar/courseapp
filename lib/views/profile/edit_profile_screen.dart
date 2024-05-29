@@ -4,6 +4,7 @@ import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/functions/FirebaseFunctions/firebasestorage_function.dart';
 import 'package:courses_app/functions/imagepicker_function.dart';
 import 'package:courses_app/utils/validator.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
@@ -22,10 +23,14 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   // GlobalKey
   final _key = GlobalKey<FormState>();
+  //  Text Editing Controller
   final _nameController = TextEditingController();
   final _dateofBirthController = TextEditingController();
   final _phonenumberController = TextEditingController();
   final _addressController = TextEditingController();
+
+  // User Dp URL
+  String? userDpURL;
 
   File? imagefile;
   @override
@@ -36,6 +41,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   addValueAuto() {
     final user = Provider.of<UserViewModel>(context, listen: false).userdata;
+    userDpURL = user.image!;
     _nameController.text = user.name!;
     _dateofBirthController.text =
         user.dateofBirth!.isEmpty || user.dateofBirth == null
@@ -60,41 +66,71 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ClipRRect(
-                  clipBehavior: Clip.none,
-                  borderRadius: BorderRadius.circular(1000),
-                  child: GestureDetector(
-                    onTap: () {
-                      imageSelectBottomshit((file) {
-                        if (file.path.isNotEmpty) {
-                          setState(() {
-                            imagefile = file;
-                          });
-                        }
-                      }, context);
-                    },
-                    child: CircleAvatar(
-                      radius: 45.r,
-                      backgroundColor: AppColor.white,
-                      backgroundImage:
-                          const AssetImage('assets/images/me_4.jpg'),
-                      child: Transform.translate(
-                          offset: Offset(40.sp, 20.sp),
-                          child: Container(
-                              padding: EdgeInsets.all(5.sp),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColor.raisinBlack,
-                                border:
-                                    Border.all(color: AppColor.white, width: 2),
+              GestureDetector(
+                onTap: () {
+                  imageSelectBottomshit((file) {
+                    if (file.path.isNotEmpty) {
+                      setState(() {
+                        imagefile = file;
+                      });
+                    }
+                  }, context);
+                },
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 100.sp,
+                      width: 100.sp,
+                      padding: EdgeInsets.all(2.sp),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border:
+                            Border.all(color: AppColor.frenchGray, width: 2),
+                      ),
+                      child: imagefile == null
+                          ? (userDpURL!.isNotEmpty && userDpURL != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(1000),
+                                  child: Image.network(
+                                    userDpURL!,
+                                  ),
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(1000),
+                                  child: Image.asset(
+                                    "assets/images/me_4.jpg",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ))
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(1000),
+                              child: Image.file(
+                                imagefile!,
+                                height: 100.sp,
+                                width: 100.sp,
+                                fit: BoxFit.cover,
                               ),
-                              child: Icon(
-                                size: 20.sp,
-                                Icons.camera_alt_outlined,
-                                color: AppColor.white,
-                              ))),
+                            ),
                     ),
-                  )),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                          padding: EdgeInsets.all(5.sp),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColor.frenchGray,
+                            border: Border.all(color: AppColor.white, width: 2),
+                          ),
+                          child: Icon(
+                            size: 20.sp,
+                            Icons.camera_alt_outlined,
+                            color: AppColor.white,
+                          )),
+                    )
+                  ],
+                ),
+              ),
               Gap(20.h),
               Form(
                 key: _key,
@@ -149,7 +185,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  _getValidText(BuildContext context) {
-    if (_key.currentState!.validate()) {}
+  _getValidText(BuildContext context) async {
+    if (_key.currentState!.validate()) {
+      String urlimage = "";
+      if (imagefile!.path.isNotEmpty) {
+        urlimage = await FirebaseStorageFunction()
+            .addimageStorage(imagefile!, context);
+      } else {
+        urlimage = await FirebaseStorageFunction()
+            .imageUpdate(userDpURL!, imagefile!, context);
+      }
+      
+    }
   }
 }

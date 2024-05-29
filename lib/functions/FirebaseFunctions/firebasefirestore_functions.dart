@@ -108,20 +108,20 @@ class FirebaseFirestoreFunction {
       var ref = _firstore.collection("courses");
       final QuerySnapshot<Map<String, dynamic>> snapshot =
           UserModel.checkIsStudent(context)
-              ? await ref
-                  .where('userid', isEqualTo: userProvider.userdata.profession)
+              ? await ref.get().then(
+                  (value) async {
+                    await getClassDataFirestore(context);
+                    return value;
+                  },
+                )
+              : await ref
+                  .where('userid', isEqualTo: userProvider.userdata.uid)
                   .get()
                   .then(
                   (value) async {
                     for (var val in value.docs) {
                       await getClassFilterData(val.id, context);
                     }
-                    return value;
-                  },
-                )
-              : await ref.get().then(
-                  (value) async {
-                    await getClassDataFirestore(context);
                     return value;
                   },
                 );
@@ -183,10 +183,13 @@ class FirebaseFirestoreFunction {
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
-      final snapshot = await _firstore.collection("class").doc(id).get();
-      if (snapshot.exists) {
-        final ClassModel data =
-            ClassModel.fromjson(snapshot.data()!, snapshot.id);
+      final snapshot = await _firstore
+          .collection("class")
+          .where("courseid", isEqualTo: id)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        final ClassModel data = ClassModel.fromjson(
+            snapshot.docs.first.data(), snapshot.docs.first.id);
         provider.addclassData(data);
       }
     } catch (e) {
