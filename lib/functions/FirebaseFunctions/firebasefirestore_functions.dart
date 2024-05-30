@@ -19,9 +19,13 @@ class FirebaseFirestoreFunction {
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
-      await _firstore.collection("user").doc(model.uid).set(model.tomap()).then(
+      await _firstore
+          .collection("user")
+          .doc(model.uid)
+          .set(model.copyWith(uid: model.uid).tomap())
+          .then(
         (value) {
-          provider.setUserData(UserModel.fromjson(model.tomap(), model.uid));
+          provider.setUserData(UserModel.fromjson(model.tomap()));
         },
       );
     } catch (e) {
@@ -40,7 +44,7 @@ class FirebaseFirestoreFunction {
       final DocumentSnapshot<Map<String, dynamic>> snapshot =
           await _firstore.collection("user").doc(uid).get();
       if (snapshot.exists) {
-        final UserModel data = UserModel.fromjson(snapshot.data()!, uid);
+        final UserModel data = UserModel.fromjson(snapshot.data()!);
         provider.setUserData(data);
       }
     } catch (e) {
@@ -52,7 +56,7 @@ class FirebaseFirestoreFunction {
 
   // User Data Update
 
-  Future<void> updateDataFirestore(
+  Future<void> userDataUpdateFirestore(
       UserModel model, BuildContext context) async {
     final provider = Provider.of<UserViewModel>(context, listen: false);
     final loading = Provider.of<BoolSetter>(context, listen: false);
@@ -86,8 +90,12 @@ class FirebaseFirestoreFunction {
       final DocumentReference<Map<String, dynamic>> reference =
           await _firstore.collection("courses").add(model.tomap());
       if (reference.id.isNotEmpty) {
-        provider
-            .addCourseData(CourseModel.fromjson(model.tomap(), reference.id));
+        _firstore
+            .collection("courses")
+            .doc(reference.id)
+            .update({"id": reference.id});
+        provider.addCourseData(
+            CourseModel.fromjson(model.copyWith(id: reference.id).tomap()));
         coureseid = reference.id;
       }
     } catch (e) {
@@ -126,9 +134,8 @@ class FirebaseFirestoreFunction {
                   },
                 );
       if (snapshot.docs.isNotEmpty) {
-        final List<CourseModel> data = snapshot.docs
-            .map((e) => CourseModel.fromjson(e.data(), e.id))
-            .toList();
+        final List<CourseModel> data =
+            snapshot.docs.map((e) => CourseModel.fromjson(e.data())).toList();
         provider.setCourseData(data);
       }
     } catch (e) {
@@ -147,7 +154,12 @@ class FirebaseFirestoreFunction {
       final DocumentReference<Map<String, dynamic>> reference =
           await _firstore.collection("class").add(model.tomap());
       if (reference.id.isNotEmpty) {
-        provider.addclassData(ClassModel.fromjson(model.tomap(), reference.id));
+        _firstore
+            .collection("class")
+            .doc(reference.id)
+            .update({"id": reference.id});
+        provider.addclassData(
+            ClassModel.fromjson(model.copyWith(id: reference.id).tomap()));
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -165,9 +177,8 @@ class FirebaseFirestoreFunction {
       final QuerySnapshot<Map<String, dynamic>> snapshot =
           await _firstore.collection("class").get();
       if (snapshot.docs.isNotEmpty) {
-        final List<ClassModel> data = snapshot.docs
-            .map((e) => ClassModel.fromjson(e.data(), e.id))
-            .toList();
+        final List<ClassModel> data =
+            snapshot.docs.map((e) => ClassModel.fromjson(e.data())).toList();
         provider.setclassData(data);
       }
     } catch (e) {
@@ -188,8 +199,7 @@ class FirebaseFirestoreFunction {
           .where("courseid", isEqualTo: id)
           .get();
       if (snapshot.docs.isNotEmpty) {
-        final ClassModel data = ClassModel.fromjson(
-            snapshot.docs.first.data(), snapshot.docs.first.id);
+        final ClassModel data = ClassModel.fromjson(snapshot.docs.first.data());
         provider.addclassData(data);
       }
     } catch (e) {

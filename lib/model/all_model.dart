@@ -31,6 +31,7 @@ class UserModel {
   // tomap
   Map<String, dynamic> tomap() {
     return {
+      "uid": uid,
       "name": name,
       "address": address,
       "dateofBirth": dateofBirth,
@@ -70,8 +71,9 @@ class UserModel {
   }
 
   //  From jason
-  UserModel.fromjson(Map<String, dynamic> json, this.uid)
-      : name = json["name"] ?? "",
+  UserModel.fromjson(Map<String, dynamic> json)
+      : uid = json["uid"] ?? "",
+       name = json["name"] ?? "",
         address = json["address"] ?? "",
         dateofBirth = json["dateofBirth"] ?? "",
         image = json["image"] ?? "",
@@ -131,6 +133,7 @@ class CourseModel {
   // tomap
   Map<String, dynamic> tomap() {
     return {
+      "id": id,
       "name": name,
       "userid": userid,
       "coursetype": coursetype,
@@ -183,8 +186,9 @@ class CourseModel {
   }
 
   //  fromjson
-  CourseModel.fromjson(Map<String, dynamic> json, this.id)
-      : name = json["name"] ?? "",
+  CourseModel.fromjson(Map<String, dynamic> json)
+      : id = json["id"] ?? "",
+       name = json["name"] ?? "",
         userid = json["userid"] ?? "",
         coursetype = json["coursetype"] ?? "",
         datetime = json["datetime"] ?? "",
@@ -227,6 +231,7 @@ class ClassModel {
   // tomap
   Map<String, dynamic> tomap() {
     return {
+      "id": id,
       "name": name,
       "description": description,
       "datetime": datetime,
@@ -261,8 +266,9 @@ class ClassModel {
   }
 
   // fromjson
-  ClassModel.fromjson(Map<String, dynamic> json, this.id)
-      : name = json["name"] ?? "",
+  ClassModel.fromjson(Map<String, dynamic> json)
+      : id = json["id"] ?? "",
+       name = json["name"] ?? "",
         description = json["description"] ?? "",
         datetime = json["datetime"] ?? "",
         duration = json["duration"] ?? "",

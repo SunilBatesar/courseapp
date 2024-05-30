@@ -25,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   nextScreen() async {
     if (!await rebuild()) return;
     final id = UserSharedPreferences().getuserSharedPrefs();
+    print(id);
     Future.delayed(const Duration(milliseconds: 2), () async {
       if (id != null) {
         await FirebaseFirestoreFunction().getUserData(id, context);

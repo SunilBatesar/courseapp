@@ -1,4 +1,5 @@
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,7 +8,7 @@ class CommonTextField extends StatelessWidget {
   final IconData? suffixicon, prefixicon;
   final TextEditingController? controller;
   final Function(String)? fieldSubmitted;
-  final String? Function(String?)? validator;
+  final AppValidator? validator;
   final FocusNode? focusnode;
   final int? maxlines;
   final TextInputType? keyboardtype;
@@ -25,7 +26,7 @@ class CommonTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: validator,
+      validator: validator == null ? null : (v) => validator!.validator(v),
       onFieldSubmitted:
           fieldSubmitted != null ? (value) => fieldSubmitted!(value) : null,
       controller: controller,

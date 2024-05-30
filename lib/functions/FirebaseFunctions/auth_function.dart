@@ -16,7 +16,6 @@ class AuthFunction {
   // CreateUser (SingUp)
   Future singUpUser(
       UserModel model, String password, BuildContext context) async {
-    final provider = Provider.of<UserViewModel>(context, listen: false);
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
@@ -24,12 +23,15 @@ class AuthFunction {
           await _auth.createUserWithEmailAndPassword(
               email: model.email!, password: password);
       if (usercredential.user!.uid.isNotEmpty) {
+        //  Call Firebase Firestore Function Set user Data
         await FirebaseFirestoreFunction().setUserDataFirestore(
             model.copyWith(uid: usercredential.user!.uid), context);
-        provider.setUserData(model.copyWith(uid: usercredential.user!.uid));
+        //  User Shared Preferences Set
         await UserSharedPreferences()
             .setuserSharedPrefs(usercredential.user!.uid);
-            await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
+        //  Call Firebase Firestore Function Get Courses Data
+        await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
+        //  And Push AppBottomNavigationBar
         Navigator.pushNamedAndRemoveUntil(
             context, RouteName.appBottomNavigationBar, (route) => false);
       }
@@ -54,8 +56,7 @@ class AuthFunction {
       if (snapshot.docs.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
-        provider.setUserData(UserModel.fromjson(
-            snapshot.docs.first.data(), snapshot.docs.first.id));
+        provider.setUserData(UserModel.fromjson(snapshot.docs.first.data()));
         await UserSharedPreferences()
             .setuserSharedPrefs(snapshot.docs.first.id);
         await FirebaseFirestoreFunction().getCoursesDataFirestore(context);

@@ -48,6 +48,7 @@ dependencies:
   intl: ^0.19.0
   shimmer: ^3.0.0
   shared_preferences: ^2.2.3
+  crop_image: ^1.0.12
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/
     - assets/jsons/
 
   # An image asset can refer to one or more resolution-specific "variants", see

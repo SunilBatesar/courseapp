@@ -67,41 +67,39 @@ class _SingnupScreenState extends State<SingnupScreen> {
                       CommonTextField(
                         text: "Name",
                         controller: _nameController,
-                        validator: (v) => AppValidator.textValidator(v, "Name"),
+                        validator: TextValidator(),
                       ),
                       Gap(20.h),
                       CommonTextField(
                         text: "Email",
                         controller: _emailController,
-                        validator: (v) => AppValidator.emailValidator(v),
+                        validator: EmailValidator(),
                       ),
                       Gap(20.h),
                       CommonTextField(
                         text: "Password",
                         controller: _passwordController,
-                        validator: (v) => AppValidator.passwordValidator(v),
+                        validator: PasswordValidator(),
                       ),
                       Gap(20.h),
                       CommonTextField(
                         text: "Date of Birth",
                         keyboardtype: TextInputType.datetime,
                         controller: _dateofBirthController,
-                        validator: (v) =>
-                            AppValidator.textValidator(v, "Date of Birth"),
+                        validator: TextValidator(),
                       ),
                       Gap(20.h),
                       CommonTextField(
                         text: "Phone Number",
                         keyboardtype: TextInputType.phone,
                         controller: _phonenumberController,
-                        validator: (v) => AppValidator.phoneNumberValidator(v),
+                        validator: TextValidator(),
                       ),
                       Gap(20.h),
                       CommonTextField(
                         text: "Address",
                         controller: _addressController,
-                        validator: (v) =>
-                            AppValidator.textValidator(v, "Address"),
+                        validator: TextValidator(),
                       ),
                     ],
                   )),

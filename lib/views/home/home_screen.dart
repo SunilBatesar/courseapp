@@ -4,6 +4,7 @@ import 'package:courses_app/components/tile/courses_tile.dart';
 import 'package:courses_app/components/tile/loding_tile.dart';
 import 'package:courses_app/data/localdata.dart';
 import 'package:courses_app/model/all_model.dart';
+import 'package:courses_app/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/class_viewmodel.dart';
@@ -62,8 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final courseprovider = Provider.of<CourseViewModel>(context);
     final classprovider = Provider.of<ClassViewModel>(context);
     final loading = Provider.of<BoolSetter>(context).loading;
-    final userData = Provider.of<UserViewModel>(context);
+    final userData = Provider.of<UserViewModel>(context).userdata;
     final maindata = Provider.of<MaincourseViewModel>(context, listen: false);
+    print(userData.name);
+    
     final q = maindata.maincoursedata
         .where((element) =>
             element.coursemodel.coursetype!.toLowerCase() ==
@@ -77,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 .trim()
                 .contains(searchOnchanged.toLowerCase().trim()))
             .toList();
+
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       body: SafeArea(
@@ -100,12 +104,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 50.sp,
                       decoration: const BoxDecoration(
                           color: AppColor.white, shape: BoxShape.circle),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(1000),
-                          child: Image.asset(
-                            "assets/images/me_4.jpg",
-                            fit: BoxFit.cover,
-                          )),
+                      child: userData.image!.isNotEmpty
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(1000),
+                              child: Image.network(
+                                userData.image!,
+                                fit: BoxFit.cover,
+                              ))
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(1000),
+                              child: Image.asset(
+                                AppConfig.applogo,
+                                fit: BoxFit.cover,
+                              )),
                     ),
                   ],
                 ),

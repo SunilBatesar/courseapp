@@ -4,9 +4,13 @@ import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasestorage_function.dart';
 import 'package:courses_app/functions/imagepicker_function.dart';
+import 'package:courses_app/services/app_services.dart';
+import 'package:courses_app/services/appconfig.dart';
 import 'package:courses_app/utils/validator.dart';
+import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,7 +66,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: SafeArea(
           child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20.0.sp),
+          padding: EdgeInsets.only(left: 20.sp, right: 20.sp, bottom: 20.sp),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -93,12 +97,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Image.network(
                                     userDpURL!,
+                                    fit: BoxFit.cover,
                                   ),
                                 )
                               : ClipRRect(
                                   borderRadius: BorderRadius.circular(1000),
                                   child: Image.asset(
-                                    "assets/images/me_4.jpg",
+                                    AppConfig.applogo,
                                     fit: BoxFit.cover,
                                   ),
                                 ))
@@ -139,45 +144,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     CommonTextField(
                       text: "Name",
                       controller: _nameController,
-                      validator: (v) => AppValidator.textValidator(v, "Name"),
+                      validator: TextValidator(),
                     ),
                     Gap(20.h),
                     CommonTextField(
                       text: "Date of Birth",
                       keyboardtype: TextInputType.datetime,
                       controller: _dateofBirthController,
-                      validator: (v) =>
-                          AppValidator.textValidator(v, "Date of Birth"),
+                      validator: TextValidator(),
                     ),
                     Gap(20.h),
                     CommonTextField(
                       text: "Phone Number",
                       keyboardtype: TextInputType.phone,
                       controller: _phonenumberController,
-                      validator: (v) => AppValidator.phoneNumberValidator(v),
+                      validator: TextValidator(),
                     ),
                     Gap(20.h),
                     CommonTextField(
                       text: "Address",
                       controller: _addressController,
-                      validator: (v) =>
-                          AppValidator.textValidator(v, "Address"),
+                      validator: TextValidator(),
                     ),
                   ],
                 ),
               ),
               Gap(20.h),
-              Row(
-                children: [
-                  AppButton(
-                    title: "Save",
-                    onPressed: () {
-                      _getValidText(context);
-                    },
-                    isExpanded: true,
-                  ),
-                ],
-              )
+              Consumer<BoolSetter>(
+                  builder: (context, value, child) => Row(
+                        children: [
+                          AppButton(
+                            title: "Save",
+                            onPressed: () {
+                              _getValidText(context);
+                            },
+                            isExpanded: true,
+                            isloading: value.loading,
+                          ),
+                        ],
+                      ))
             ],
           ),
         ),
@@ -186,16 +191,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   _getValidText(BuildContext context) async {
+    final userprovider =
+        Provider.of<UserViewModel>(context, listen: false).userdata;
     if (_key.currentState!.validate()) {
       String urlimage = "";
       if (imagefile!.path.isNotEmpty) {
         urlimage = await FirebaseStorageFunction()
-            .addimageStorage(imagefile!, context);
+            .imageUpdate(userDpURL!, imagefile!, context);
       } else {
         urlimage = await FirebaseStorageFunction()
-            .imageUpdate(userDpURL!, imagefile!, context);
+            .addimageStorage(imagefile!, context);
       }
-      
+      FirebaseFirestoreFunction().userDataUpdateFirestore(
+          userprovider.copyWith(
+            name: _nameController.text.trim(),
+            dateofBirth: _dateofBirthController.text.trim(),
+            phonenumber: int.parse(_phonenumberController.text.trim()),
+            address: _addressController.text.trim(),
+            image: urlimage,
+          ),
+          context);
+      AppServices.popView(context);
     }
   }
 }
