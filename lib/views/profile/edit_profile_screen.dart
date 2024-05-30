@@ -37,6 +37,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String? userDpURL;
 
   File? imagefile;
+
   @override
   void initState() {
     super.initState();
@@ -61,6 +62,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(imagefile);
     return Scaffold(
       appBar: CustomAppbar(context: context),
       body: SafeArea(
@@ -194,13 +196,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final userprovider =
         Provider.of<UserViewModel>(context, listen: false).userdata;
     if (_key.currentState!.validate()) {
-      String urlimage = "";
-      if (imagefile!.path.isNotEmpty) {
-        urlimage = await FirebaseStorageFunction()
-            .imageUpdate(userDpURL!, imagefile!, context);
-      } else {
-        urlimage = await FirebaseStorageFunction()
-            .addimageStorage(imagefile!, context);
+      String urlimage = userDpURL!;
+      if (imagefile != null && imagefile!.path.isNotEmpty) {
+        if (userDpURL != null && userDpURL!.isNotEmpty) {
+          urlimage = await FirebaseStorageFunction()
+              .imageUpdate(userDpURL!, imagefile!, context);
+        } else {
+          urlimage = await FirebaseStorageFunction()
+              .addimageStorage(imagefile!, context);
+        }
       }
       FirebaseFirestoreFunction().userDataUpdateFirestore(
           userprovider.copyWith(

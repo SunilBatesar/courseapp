@@ -13,12 +13,14 @@ class FirebaseStorageFunction {
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     String imageURL = "";
+    print(file.path);
     try {
       final String id = DateTime.now().millisecondsSinceEpoch.toString() +
           file.path.split("/").last;
       final Reference reference = _storage.ref().child("media/$id");
       await reference.putFile(file);
       imageURL = await reference.getDownloadURL();
+      print(imageURL);
     } catch (e) {
       debugPrint(e.toString());
     } finally {
