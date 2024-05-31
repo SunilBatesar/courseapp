@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:courses_app/components/SharedPreferences/usersharedpreferences.dart';
-import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
@@ -16,6 +15,7 @@ class AuthFunction {
   // CreateUser (SingUp)
   Future singUpUser(
       UserModel model, String password, BuildContext context) async {
+    final userprovider = Provider.of<UserViewModel>(context, listen: false);
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
@@ -23,14 +23,16 @@ class AuthFunction {
           await _auth.createUserWithEmailAndPassword(
               email: model.email!, password: password);
       if (usercredential.user!.uid.isNotEmpty) {
-        //  Call Firebase Firestore Function Set user Data
-        await FirebaseFirestoreFunction().setUserDataFirestore(
+        await userprovider.setUserDataFirebase(
             model.copyWith(uid: usercredential.user!.uid), context);
+        //  Call Firebase Firestore Function Set user Data
+        // await FirebaseFirestoreFunction().setUserDataFirestore(
+        //     model.copyWith(uid: usercredential.user!.uid), context);
+        // //  Call Firebase Firestore Function Get Courses Data
+        // await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
         //  User Shared Preferences Set
         await UserSharedPreferences()
             .setuserSharedPrefs(usercredential.user!.uid);
-        //  Call Firebase Firestore Function Get Courses Data
-        await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
         //  And Push AppBottomNavigationBar
         Navigator.pushNamedAndRemoveUntil(
             context, RouteName.appBottomNavigationBar, (route) => false);
@@ -59,7 +61,7 @@ class AuthFunction {
         provider.setUserData(UserModel.fromjson(snapshot.docs.first.data()));
         await UserSharedPreferences()
             .setuserSharedPrefs(snapshot.docs.first.id);
-        await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
+        // await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
         Navigator.pushNamedAndRemoveUntil(
           context,
           RouteName.appBottomNavigationBar,

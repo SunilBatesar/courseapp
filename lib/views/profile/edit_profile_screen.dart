@@ -62,7 +62,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(imagefile);
     return Scaffold(
       appBar: CustomAppbar(context: context),
       body: SafeArea(
@@ -170,6 +169,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                   ],
                 ),
+              ),
+              Gap(20.h),
+              AppButton(
+                title: "Crope Image",
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const Cropeimage(title: "Image Crope"),
+                      ));
+                },
               ),
               Gap(20.h),
               Consumer<BoolSetter>(

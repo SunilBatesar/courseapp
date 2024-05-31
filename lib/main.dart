@@ -1,3 +1,4 @@
+import 'package:courses_app/classes/main_class.dart';
 import 'package:courses_app/firebase_options.dart';
 import 'package:courses_app/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes.dart';
@@ -14,12 +15,14 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late SharedPreferences sharedPrefs;
+late MainClass maindata;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   sharedPrefs = await SharedPreferences.getInstance();
+  maindata = MainClass.instance;
   runApp(const MyApp());
 }
 

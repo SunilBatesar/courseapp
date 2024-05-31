@@ -1,24 +1,39 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:courses_app/data/network/baseapi_service.dart';
-// import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:courses_app/data/network/baseapi_service.dart';
 
-// class NetworkFirebaseService extends FirebaseService {
-//   //  Call FirebaseFirestore
-//   final _firstore = FirebaseFirestore.instance;
-//   @override
-//   Future<QuerySnapshot<Map<String, dynamic>>> getFirebaseResponse(
-//       String collection) async {
-//     QuerySnapshot<Map<String, dynamic>>? snapshot;
-//     try {
-//       final QuerySnapshot<Map<String, dynamic>> data =
-//           await _firstore.collection(collection).get();
-//       snapshot = data;
-//     } catch (e) {
-//       debugPrint(e.toString());
-//     }
-//     return snapshot!;
-//   }
+class NetworkFirebaseService extends FirebaseService {
+  final firebase = FirebaseFirestore.instance;
+  @override
+  Future get(path) {
+    Future<Object> response;
+    if (path is CollectionReference || path is Query<Map<String, dynamic>>) {
+      response = path.get();
+      // TODO ;; IMPLEMENT COLLECTION FUNCTIONALITY
+    } else {
+      response = (path as DocumentReference).get();
+      // TODO;; IMPLEMENT DOCUEMENT FUNCTIONALITY
+    }
 
-//   @override
-//   Future setFirebaseResponse(String collection) async {}
-// }
+    return response;
+  }
+
+  @override
+  Future post(path, data) {
+    Future<void> response;
+    if (path is CollectionReference) {
+      response = path.add(data);
+      // TODO ;; IMPLEMENT COLLECTION FUNCTIONALITY
+    } else {
+      response = (path as DocumentReference).set(data);
+      // TODO;; IMPLEMENT DOCUEMENT FUNCTIONALITY
+    }
+
+    return response;
+  }
+
+  @override
+  Future update(path, data) {
+    return (path as DocumentReference).update(data);
+    // TODO;; UPDATE DOCUEMENT FUNCTIONALITY
+  }
+}

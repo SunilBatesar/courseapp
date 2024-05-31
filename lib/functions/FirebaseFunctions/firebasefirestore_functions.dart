@@ -19,11 +19,7 @@ class FirebaseFirestoreFunction {
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
-      await _firstore
-          .collection("user")
-          .doc(model.uid)
-          .set(model.copyWith(uid: model.uid).tomap())
-          .then(
+      await _firstore.collection("user").doc(model.uid).set(model.tomap()).then(
         (value) {
           provider.setUserData(UserModel.fromjson(model.tomap()));
         },
@@ -198,9 +194,18 @@ class FirebaseFirestoreFunction {
           .collection("class")
           .where("courseid", isEqualTo: id)
           .get();
+      print("${snapshot.docs.map(
+        (e) => e.data(),
+      )}");
+      print("$snapshot   $id");
+      // print(snapshot);
       if (snapshot.docs.isNotEmpty) {
-        final ClassModel data = ClassModel.fromjson(snapshot.docs.first.data());
-        provider.addclassData(data);
+        final List<ClassModel> data = snapshot.docs
+            .map(
+              (e) => ClassModel.fromjson(e.data()),
+            )
+            .toList();
+        provider.setclassData(data);
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -209,3 +214,36 @@ class FirebaseFirestoreFunction {
     }
   }
 }
+// Future<void> setUserDataFirestore(UserModel model, BuildContext context) async {
+//   final provider = Provider.of<UserViewModel>(context, listen: false);
+//   final loading = Provider.of<BoolSetter>(context, listen: false);
+
+//   _setLoading(loading, true);
+//   try {
+//     await _writeUserDataToFirestore(model);
+//     _handleFirestoreSuccess(provider, model);
+//   } catch (e) {
+//     _handleFirestoreError(e);
+//   } finally {
+//     _setLoading(loading, false);
+//   }
+// }
+
+// void _setLoading(BoolSetter loading, bool state) {
+//   loading.setloading(state);
+// }
+
+// Future<void> _writeUserDataToFirestore(UserModel model) async {
+//   await _firestore
+//       .collection("user")
+//       .doc(model.uid)
+//       .set(model.copyWith(uid: model.uid).toMap());
+// }
+
+// void _handleFirestoreSuccess(UserViewModel provider, UserModel model) {
+//   provider.setUserData(UserModel.fromJson(model.toMap()));
+// }
+
+// void _handleFirestoreError(dynamic error) {
+//   debugPrint(error.toString());
+// }

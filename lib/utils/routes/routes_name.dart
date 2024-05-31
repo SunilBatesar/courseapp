@@ -1,5 +1,5 @@
 class RouteName {
-  // ---- Home Screen Route Name ------
+  // ---- Home Screen Route Na  me ------
   static const String homeScreen = "Home_Screen";
   static const String courseDetailScreen = "CourseDetailScreen";
   static const String appBottomNavigationBar = "AppBottomNavigationBar";

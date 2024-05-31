@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userprovider = Provider.of<UserViewModel>(context).userdata;
-    print(userprovider.image);
+
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       body: SafeArea(

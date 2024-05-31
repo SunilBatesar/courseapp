@@ -1,6 +1,5 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-
-// abstract class FirebaseService {
-//   Future<dynamic> setFirebaseResponse(String collection);
-//   Future<QuerySnapshot<Map<String, dynamic>>> getFirebaseResponse(String collection);
-// }
+abstract class FirebaseService {
+  Future<dynamic> get(dynamic path);
+  Future<dynamic> post(dynamic path, Map<String, dynamic> data);
+  Future<dynamic> update(dynamic path,Map<String,dynamic> data);
+}

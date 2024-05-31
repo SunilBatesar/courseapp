@@ -1,8 +1,10 @@
 import 'package:courses_app/components/SharedPreferences/usersharedpreferences.dart';
 import 'package:courses_app/components/style_seet.dart';
-import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
+import 'package:courses_app/view_model/class_viewmodel.dart';
+import 'package:courses_app/view_model/course_viewmodel.dart';
+import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,12 +26,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextScreen() async {
     if (!await rebuild()) return;
+    // UserSharedPreferences().removUserSharedPrefs();
     final id = UserSharedPreferences().getuserSharedPrefs();
     print(id);
     Future.delayed(const Duration(milliseconds: 2), () async {
       if (id != null) {
-        await FirebaseFirestoreFunction().getUserData(id, context);
-        await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
+        // OLD Functions
+        // await FirebaseFirestoreFunction().getUserData(id, context);
+        // await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
+
+        // NEW FUNCTIONS
+        await UserViewModel().getUserDataFirebase(id, context);
+        await CourseViewModel().getCoursesDataFirestore(context);
+        await ClassViewModel().getClassDataFirebase(context);
         Navigator.pushNamed(context, RouteName.appBottomNavigationBar);
       } else {
         Navigator.pushNamed(context, RouteName.loginScreen);

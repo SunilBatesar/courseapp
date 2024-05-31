@@ -65,8 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final loading = Provider.of<BoolSetter>(context).loading;
     final userData = Provider.of<UserViewModel>(context).userdata;
     final maindata = Provider.of<MaincourseViewModel>(context, listen: false);
-    print(userData.name);
-    
     final q = maindata.maincoursedata
         .where((element) =>
             element.coursemodel.coursetype!.toLowerCase() ==
@@ -95,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Welcome \nback Timmy👋",
+                      "Welcome \nback ${userData.name}👋",
                       style: AppTextTheme.fs20Medium,
                     ),
                     Container(

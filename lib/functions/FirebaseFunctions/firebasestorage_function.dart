@@ -7,20 +7,18 @@ import 'package:provider/provider.dart';
 
 class FirebaseStorageFunction {
   final _storage = FirebaseStorage.instance;
-  // image Uploade FirebadseStorage and Downlode URL
 
+  // image Uploade FirebadseStorage and Downlode URL
   Future<String> addimageStorage(File file, BuildContext context) async {
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     String imageURL = "";
-    print(file.path);
     try {
       final String id = DateTime.now().millisecondsSinceEpoch.toString() +
           file.path.split("/").last;
       final Reference reference = _storage.ref().child("media/$id");
       await reference.putFile(file);
       imageURL = await reference.getDownloadURL();
-      print(imageURL);
     } catch (e) {
       debugPrint(e.toString());
     } finally {
@@ -29,6 +27,7 @@ class FirebaseStorageFunction {
     return imageURL;
   }
 
+  //  Update File in Firebase Storage
   Future<String> imageUpdate(
       String imageURL, File file, BuildContext context) async {
     final loading = Provider.of<BoolSetter>(context, listen: false);
@@ -44,5 +43,14 @@ class FirebaseStorageFunction {
       loading.setloading(false);
     }
     return imageurl;
+  }
+
+  //  Delete File in Firebase Storage
+  Future<void> deleteImage(String url) async {
+    try {
+      await _storage.refFromURL(url).delete();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }
