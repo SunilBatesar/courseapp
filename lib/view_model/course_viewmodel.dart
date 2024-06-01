@@ -27,7 +27,6 @@ class CourseViewModel extends ChangeNotifier {
       CourseModel model, BuildContext context) async {
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
-
     try {
       final DocumentReference<Map<String, dynamic>> reference =
           await _service.post(maindata.apis.coursesReference, model.tomap());

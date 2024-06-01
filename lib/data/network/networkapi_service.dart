@@ -6,9 +6,12 @@ class NetworkFirebaseService extends FirebaseService {
   @override
   Future get(path) {
     Future<Object> response;
-    if (path is CollectionReference || path is Query<Map<String, dynamic>>) {
+    if (path is CollectionReference) {
       response = path.get();
       // TODO ;; IMPLEMENT COLLECTION FUNCTIONALITY
+    } else if (path is Query<Map<String, dynamic>>) {
+      response = path.get();
+      // TODO ;; IMPLEMENT WHERE METHOD COLLECTION FUNCTIONALITY
     } else {
       response = (path as DocumentReference).get();
       // TODO;; IMPLEMENT DOCUEMENT FUNCTIONALITY
