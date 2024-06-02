@@ -1,5 +1,5 @@
-import 'package:courses_app/components/SharedPreferences/usersharedpreferences.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/main.dart';
 import 'package:courses_app/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/class_viewmodel.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -26,22 +27,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextScreen() async {
     if (!await rebuild()) return;
-    // UserSharedPreferences().removUserSharedPrefs();
-    final id = UserSharedPreferences().getuserSharedPrefs();
-    print(id);
+    final courseProvider = Provider.of<CourseViewModel>(context, listen: false);
+    final classProvider = Provider.of<ClassViewModel>(context, listen: false);
+    final id = pref.getSharedPrefs("userid");
     Future.delayed(const Duration(milliseconds: 2), () async {
       if (id != null) {
-        // OLD Functions
-        // await FirebaseFirestoreFunction().getUserData(id, context);
-        // await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
-
         // NEW FUNCTIONS
         await UserViewModel().getUserDataFirebase(id, context);
-        await CourseViewModel().getCoursesDataFirestore(context);
-        await ClassViewModel().getClassDataFirebase(context);
-        Navigator.pushNamed(context, RouteName.appBottomNavigationBar);
+        // Courses Data Get Function Call
+        await courseProvider.getCourses(context);
+        // Class Data Get Function Call
+        await classProvider.getClass(context);
+        // Push Named And RemoveUntil Next Screen (App Bottom NavigationBar)
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteName.appBottomNavigationBar, (route) => false);
       } else {
-        Navigator.pushNamed(context, RouteName.loginScreen);
+        // Push Named And RemoveUntil Next Screen (Login Screen)
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteName.loginScreen, (route) => false);
       }
     });
   }

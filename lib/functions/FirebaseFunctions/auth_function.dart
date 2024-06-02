@@ -32,7 +32,7 @@ class AuthFunction {
         // await FirebaseFirestoreFunction().getCoursesDataFirestore(context);
         //  User Shared Preferences Set
         await UserSharedPreferences()
-            .setuserSharedPrefs(usercredential.user!.uid);
+            .setuserSharedPrefs(usercredential.user!.uid); 
         //  And Push AppBottomNavigationBar
         Navigator.pushNamedAndRemoveUntil(
             context, RouteName.appBottomNavigationBar, (route) => false);
