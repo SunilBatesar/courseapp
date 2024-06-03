@@ -4,10 +4,10 @@ import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
-import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasestorage_function.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
+import 'package:courses_app/view_model/class_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -43,6 +43,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final classprovider = Provider.of<ClassViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       appBar: CustomAppbar(
@@ -162,8 +163,16 @@ class _AddClassScreenState extends State<AddClassScreen> {
                             courseid: widget.courseid,
                             datetime: datetimenow.toString(),
                           );
-                          await FirebaseFirestoreFunction()
-                              .setClassDataFirestore(data, context);
+                          // NEW FUNCTION
+                          classprovider
+                              .setClass(model: data, context: context)
+                              .then((value) {
+                            print("ADD CLASS");
+                          });
+
+                          // OLD FUNCTION
+                          // await FirebaseFirestoreFunction()
+                          //     .setClassDataFirestore(data, context);
                         },
                       )
                     ],

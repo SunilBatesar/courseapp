@@ -2,12 +2,13 @@ import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
-import 'package:courses_app/functions/FirebaseFunctions/auth_function.dart';
 import 'package:courses_app/model/all_model.dart';
-import 'package:courses_app/services/appconfig.dart';
+import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/enums/app_enum.dart';
+import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/utils/validator.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
+import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -133,16 +134,16 @@ class _SingnupScreenState extends State<SingnupScreen> {
                 ),
               ),
               Gap(40.h),
-              Consumer<BoolSetter>(
-                builder: (context, value, child) {
-                  final bool loading = value.loading;
+              Consumer2<BoolSetter, UserViewModel>(
+                builder: (context, setter, user, child) {
+                  final bool loading = setter.loading;
                   return Row(
                     children: [
                       AppButton(
                         title: "Sing Up",
                         isloading: loading,
                         onPressed: () {
-                          getValidText();
+                          getValidText(user);
                         },
                         isExpanded: true,
                       ),
@@ -157,18 +158,26 @@ class _SingnupScreenState extends State<SingnupScreen> {
     );
   }
 
-  getValidText() {
+  getValidText(UserViewModel provider) {
     if (_key.currentState!.validate()) {
-      AuthFunction().singUpUser(
-          UserModel().copyWith(
-              name: _nameController.text.trim(),
-              email: _emailController.text.trim(),
-              dateofBirth: _dateofBirthController.text.trim(),
-              phonenumber: int.parse(_phonenumberController.text.trim()),
-              address: _addressController.text.trim(),
-              profession: professionValue),
-          _passwordController.text.trim(),
-          context);
+      final UserModel user = UserModel().copyWith(
+          name: _nameController.text.trim(),
+          email: _emailController.text.trim(),
+          dateofBirth: _dateofBirthController.text.trim(),
+          phonenumber: int.parse(_phonenumberController.text.trim()),
+          address: _addressController.text.trim(),
+          profession: professionValue);
+      provider
+          .signUpFirebase(
+              model: user,
+              password: _passwordController.text.trim(),
+              context: context)
+          .then(
+        (value) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, RouteName.appBottomNavigationBar, (route) => false);
+        },
+      );
     }
   }
 }

@@ -7,8 +7,8 @@ import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasestorage_function.dart';
 import 'package:courses_app/functions/imagepicker_function.dart';
-import 'package:courses_app/services/app_services.dart';
-import 'package:courses_app/services/appconfig.dart';
+import 'package:courses_app/res/services/app_services.dart';
+import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/validator.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
@@ -46,18 +46,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   addValueAuto() {
     final user = Provider.of<UserViewModel>(context, listen: false).userdata;
-    userDpURL = user.image!;
-    _nameController.text = user.name!;
+    userDpURL = user.image;
+    _nameController.text = user.name;
     _dateofBirthController.text =
-        user.dateofBirth!.isEmpty || user.dateofBirth == null
-            ? ""
-            : user.dateofBirth!;
+        user.dateofBirth.isEmpty ? "" : user.dateofBirth;
     _phonenumberController.text =
         user.phonenumber == null || user.phonenumber == 0
             ? ""
             : user.phonenumber.toString();
-    _addressController.text =
-        user.address!.isEmpty || user.address == null ? "" : user.address!;
+    _addressController.text = user.address.isEmpty ? "" : user.address;
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/model/all_model.dart';
-import 'package:courses_app/services/app_services.dart';
+import 'package:courses_app/res/services/app_services.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

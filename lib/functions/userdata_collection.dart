@@ -17,12 +17,16 @@ class UserDataController {
 
       UserModel data = UserModel.fromjson(snapshot.data()!);
       provider.setUserData(data);
-    } catch (e) {}
+    } catch (e) {
+      rethrow;
+    }
   }
 
   void updateUserData(String id, Map<String, dynamic> data) {
     try {
       fn.update(maindata.apis.userdoc(id), data);
-    } catch (e) {}
+    } catch (e) {
+      rethrow;
+    }
   }
 }

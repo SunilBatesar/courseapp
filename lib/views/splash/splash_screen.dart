@@ -1,6 +1,6 @@
+import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/components/style_seet.dart';
-import 'package:courses_app/main.dart';
-import 'package:courses_app/services/appconfig.dart';
+import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/class_viewmodel.dart';
 import 'package:courses_app/view_model/course_viewmodel.dart';
@@ -27,13 +27,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextScreen() async {
     if (!await rebuild()) return;
+    final userProvider = Provider.of<UserViewModel>(context, listen: false);
     final courseProvider = Provider.of<CourseViewModel>(context, listen: false);
     final classProvider = Provider.of<ClassViewModel>(context, listen: false);
-    final id = pref.getSharedPrefs("userid");
+    final id = SPref.getSharedPrefs(SPref.userIDKey);
     Future.delayed(const Duration(milliseconds: 2), () async {
-      if (id != null) {
+      if (id.isNotEmpty) {
         // NEW FUNCTIONS
-        await UserViewModel().getUserDataFirebase(id, context);
+        await userProvider.getUserDataFirebase(id, context);
         // Courses Data Get Function Call
         await courseProvider.getCourses(context);
         // Class Data Get Function Call

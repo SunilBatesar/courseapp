@@ -1,13 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/data/network/networkapi_service.dart';
 import 'package:courses_app/main.dart';
 import 'package:courses_app/model/all_model.dart';
+import 'package:courses_app/repository/user_repository.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class UserViewModel extends ChangeNotifier {
+  // Call Network Firebase Service
   final _service = NetworkFirebaseService();
+  // Call User Repository
+  final _repository = UserRepository();
   dynamic _userdata;
   // Get User Data
   UserModel get userdata => _userdata;
@@ -17,17 +22,17 @@ class UserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setUserDataFirebase(
-      UserModel model, BuildContext context) async {
+  Future<void> signUpFirebase(
+      {required UserModel model,
+      required String password,
+      required BuildContext context}) async {
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
-      await _service.post(maindata.apis.userdoc(model.uid), model.tomap()).then(
-        (value) {
-          _userdata = model;
-          notifyListeners();
-        },
-      );
+      final user = await _repository.setUser(model: model, password: password);
+      await SPref.setSharedPrefs(SPref.userIDKey, user.uid);
+      _userdata = user;
+      notifyListeners();
     } catch (e) {
       print(e.toString());
     } finally {
@@ -35,8 +40,8 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
+  //  User Data Get In FirebaseFirestore (Use User ID)
   Future<void> getUserDataFirebase(String id, BuildContext context) async {
-    final userprovider = Provider.of<UserViewModel>(context, listen: false);
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {
@@ -44,8 +49,7 @@ class UserViewModel extends ChangeNotifier {
           await _service.get(maindata.apis.userdoc(id));
       if (snapshot.id.isNotEmpty) {
         final UserModel data = UserModel.fromjson(snapshot.data()!);
-        userprovider.setUserData(data);
-        // _userdata = data;
+        _userdata = data;
         notifyListeners();
       }
     } catch (e) {
@@ -53,5 +57,17 @@ class UserViewModel extends ChangeNotifier {
     } finally {
       loading.setloading(false);
     }
+  }
+}
+
+authERROR(String error) {
+  switch (error) {
+    case "email-already-in-use":
+      return "The email address is already in use by another account.";
+    case "invalid-email":
+      return "The email address is badly formatted.";
+    case "wrong-password":
+      return "The password is invalid or the user does not have a password.";
+    default:
   }
 }

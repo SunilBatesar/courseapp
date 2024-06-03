@@ -5,11 +5,11 @@ import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/data/localdata.dart';
-import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasestorage_function.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
+import 'package:courses_app/view_model/course_viewmodel.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,10 +50,11 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     }
     setState(() {});
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserViewModel>(context).userdata;
+    final courseprovider = Provider.of<CourseViewModel>(context);
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       appBar: CustomAppbar(
@@ -212,16 +213,30 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                               datetime: datetimenow.toString(),
                               images: imageURLlist,
                               userid: user.uid);
-                          await FirebaseFirestoreFunction()
-                              .setCourseDataFirestore(coursedata, context)
+
+                          //  NEW FUNCTION
+                          await courseprovider
+                              .setCourse(model: coursedata, context: context)
                               .then(
                             (value) {
-                              print("Add Course");
+                              print("ADD COURSE $value");
                               Navigator.pushNamed(
                                   context, RouteName.addClassScreen,
                                   arguments: value);
                             },
                           );
+
+                          //  OLD Function
+                          // await FirebaseFirestoreFunction()
+                          //     .setCourseDataFirestore(coursedata, context)
+                          //     .then(
+                          //   (value) {
+                          //     print("Add Course");
+                          //     Navigator.pushNamed(
+                          //         context, RouteName.addClassScreen,
+                          //         arguments: value);
+                          //   },
+                          // );
                         },
                       )
                     ],

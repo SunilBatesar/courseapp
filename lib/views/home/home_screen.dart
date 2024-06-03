@@ -4,7 +4,7 @@ import 'package:courses_app/components/tile/courses_tile.dart';
 import 'package:courses_app/components/tile/loding_tile.dart';
 import 'package:courses_app/data/localdata.dart';
 import 'package:courses_app/model/all_model.dart';
-import 'package:courses_app/services/appconfig.dart';
+import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/class_viewmodel.dart';
@@ -102,11 +102,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       width: 50.sp,
                       decoration: const BoxDecoration(
                           color: AppColor.white, shape: BoxShape.circle),
-                      child: userData.image!.isNotEmpty
+                      child: userData.image.isNotEmpty
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(1000),
                               child: Image.network(
-                                userData.image!,
+                                userData.image,
                                 fit: BoxFit.cover,
                               ))
                           : ClipRRect(

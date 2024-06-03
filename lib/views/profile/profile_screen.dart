@@ -1,7 +1,7 @@
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/data/localdata.dart';
 import 'package:courses_app/functions/FirebaseFunctions/auth_function.dart';
-import 'package:courses_app/services/appconfig.dart';
+import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +24,9 @@ class ProfileScreen extends StatelessWidget {
         children: [
           ClipRRect(
               borderRadius: BorderRadius.circular(1000),
-              child: userprovider.image!.isNotEmpty
+              child: userprovider.image.isNotEmpty
                   ? Image.network(
-                      userprovider.image!,
+                      userprovider.image,
                       height: 100.sp,
                       width: 100.sp,
                       fit: BoxFit.cover,
@@ -39,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
                     )),
           Gap(20.h),
           Text(
-            userprovider.name!,
+            userprovider.name,
             style: AppTextTheme.fs20Medium,
           ),
           Gap(20.h),

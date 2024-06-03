@@ -11,13 +11,14 @@ class CourseRepository {
       final DocumentReference<Map<String, dynamic>> reference = await maindata
           .networkFirebaseService
           .post(maindata.apis.coursesReference, model.tomap());
-      if (reference.id.isNotEmpty) {
+      String id = reference.id;
+      if (id.isNotEmpty) {
         // Course Id Add(Update) Collection
-        maindata.networkFirebaseService
-            .update(reference.id, {"id": reference.id});
+        await maindata.networkFirebaseService
+            .update(maindata.apis.coursesdoc(id), {"id": reference.id});
         // Return Course Model
         data = model.copyWith(id: reference.id);
-      } 
+      }
     } catch (e) {
       rethrow;
     }

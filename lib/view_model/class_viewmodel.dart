@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/repository/class_repository.dart';
+import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/course_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ClassViewModel extends ChangeNotifier {
@@ -21,18 +23,25 @@ class ClassViewModel extends ChangeNotifier {
   }
 
   //   Set
-  Future<void> setClass({required ClassModel model}) async {
+  Future<void> setClass(
+      {required ClassModel model, required BuildContext context}) async {
+    final loading = Provider.of<BoolSetter>(context, listen: false);
+    loading.setloading(true);
     try {
       final data = await _repository.setClass(model: model);
       _classdata.add(data);
       notifyListeners();
     } catch (e) {
       print(e.toString());
+    } finally {
+      loading.setloading(false);
     }
   }
 
   // Get
   Future<void> getClass(BuildContext context) async {
+    final loading = Provider.of<BoolSetter>(context, listen: false);
+    loading.setloading(true);
     final courseData =
         Provider.of<CourseViewModel>(context, listen: false).coursedata;
     try {
@@ -42,6 +51,8 @@ class ClassViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print(e.toString());
+    } finally {
+      loading.setloading(false);
     }
   }
 }

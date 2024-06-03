@@ -1,4 +1,4 @@
-import 'package:courses_app/services/app_services.dart';
+import 'package:courses_app/res/services/app_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';

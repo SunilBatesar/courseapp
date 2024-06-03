@@ -6,20 +6,20 @@ import 'package:provider/provider.dart';
 import '../view_model/user_viewmodel.dart';
 
 class UserModel {
-  String? uid, name, address, dateofBirth, image;
+  String uid, name, address, dateofBirth, image;
   int? phonenumber;
-  String? email, signInmethod;
+  String email, signInmethod;
   Profession? profession;
   List<String>? couresesid;
   UserModel(
-      {this.uid,
-      this.name,
-      this.address,
-      this.dateofBirth,
-      this.image,
-      this.phonenumber,
-      this.email,
-      this.signInmethod,
+      {this.uid = "",
+      this.name = "",
+      this.address = "",
+      this.dateofBirth = "",
+      this.image = "",
+      this.phonenumber = 0,
+      this.email = "",
+      this.signInmethod = "",
       this.profession,
       this.couresesid});
 
@@ -73,7 +73,7 @@ class UserModel {
   //  From jason
   UserModel.fromjson(Map<String, dynamic> json)
       : uid = json["uid"] ?? "",
-       name = json["name"] ?? "",
+        name = json["name"] ?? "",
         address = json["address"] ?? "",
         dateofBirth = json["dateofBirth"] ?? "",
         image = json["image"] ?? "",
@@ -188,7 +188,7 @@ class CourseModel {
   //  fromjson
   CourseModel.fromjson(Map<String, dynamic> json)
       : id = json["id"] ?? "",
-       name = json["name"] ?? "",
+        name = json["name"] ?? "",
         userid = json["userid"] ?? "",
         coursetype = json["coursetype"] ?? "",
         datetime = json["datetime"] ?? "",
@@ -268,7 +268,7 @@ class ClassModel {
   // fromjson
   ClassModel.fromjson(Map<String, dynamic> json)
       : id = json["id"] ?? "",
-       name = json["name"] ?? "",
+        name = json["name"] ?? "",
         description = json["description"] ?? "",
         datetime = json["datetime"] ?? "",
         duration = json["duration"] ?? "",

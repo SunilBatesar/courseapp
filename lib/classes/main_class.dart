@@ -8,7 +8,7 @@ class MainClass {
 
   //  RouteName Class Get
   final _routesnamr = RouteName();
-  RouteName get getrouteName => _routesnamr;
+  RouteName get routeName => _routesnamr;
 
   //  Apis Class Get
   final _apis = Apis();
@@ -17,4 +17,9 @@ class MainClass {
   // Get Network Firebase Service Class
   final _networkFirebaseService = NetworkFirebaseService();
   NetworkFirebaseService get networkFirebaseService => _networkFirebaseService;
+
+  // Get Network Firebase Auth Service Class
+  final _networkFirebaseAuthService = NetworkFirebaseAuthService();
+  NetworkFirebaseAuthService get networkFirebaseAuthService =>
+      _networkFirebaseAuthService;
 }

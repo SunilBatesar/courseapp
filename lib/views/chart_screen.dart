@@ -1,7 +1,7 @@
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/components/tile/performance_tile.dart';
 import 'package:courses_app/data/localdata.dart';
-import 'package:courses_app/services/app_services.dart';
+import 'package:courses_app/res/services/app_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';

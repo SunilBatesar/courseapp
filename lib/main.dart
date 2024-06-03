@@ -1,7 +1,7 @@
+import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/classes/main_class.dart';
-import 'package:courses_app/components/SharedPreferences/usersharedpreferences.dart';
 import 'package:courses_app/firebase_options.dart';
-import 'package:courses_app/services/appconfig.dart';
+import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
@@ -13,19 +13,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-late SharedPreferences sharedPrefs;
 late MainClass maindata;
-late SPref pref;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  sharedPrefs = await SharedPreferences.getInstance();
   maindata = MainClass.instance;
-  pref = SPref();
+  await SPref.getpref();
   runApp(const MyApp());
 }
 

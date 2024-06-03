@@ -3,7 +3,7 @@ import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/functions/FirebaseFunctions/auth_function.dart';
-import 'package:courses_app/services/appconfig.dart';
+import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/utils/validator.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
