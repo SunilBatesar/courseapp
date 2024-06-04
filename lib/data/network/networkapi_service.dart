@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:courses_app/data/network/baseapi_service.dart';
-import 'package:courses_app/model/all_model.dart';
+import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class NetworkFirebaseService extends FirebaseService {
   final firebase = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
   @override
   Future get(path) {
     Future<Object> response;
@@ -41,24 +42,19 @@ class NetworkFirebaseService extends FirebaseService {
     return (path as DocumentReference).update(data);
     // TODO;; UPDATE DOCUEMENT FUNCTIONALITY
   }
-}
-
-// Network Firebase Auth Service Class
-class NetworkFirebaseAuthService extends FirebaseAuthService {
-  final _auth = FirebaseAuth.instance;
 
   @override
-  Future login(String email, String password) {
-    // TODO: implement login
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<UserModel> signUp(UserModel model, String password) async {
+  Future authenticate(AuthState state, {Map<String, dynamic>? json}) async {
+    final String email = json!["email"];
+    final String password = json["password"];
     try {
-      final userCredential = await _auth.createUserWithEmailAndPassword(
-          email: model.email, password: password);
-      return model.copyWith(uid: userCredential.user!.uid);
+      if (state == AuthState.SIGNUP) {
+        return await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+      } else {
+        return await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+      }
     } catch (e) {
       rethrow;
     }

@@ -18,8 +18,4 @@ class MainClass {
   final _networkFirebaseService = NetworkFirebaseService();
   NetworkFirebaseService get networkFirebaseService => _networkFirebaseService;
 
-  // Get Network Firebase Auth Service Class
-  final _networkFirebaseAuthService = NetworkFirebaseAuthService();
-  NetworkFirebaseAuthService get networkFirebaseAuthService =>
-      _networkFirebaseAuthService;
 }

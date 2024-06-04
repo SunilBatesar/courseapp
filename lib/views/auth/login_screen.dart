@@ -2,11 +2,11 @@ import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
-import 'package:courses_app/functions/FirebaseFunctions/auth_function.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/utils/validator.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
+import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -77,16 +77,16 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               Gap(40.h),
-              Consumer<BoolSetter>(
-                builder: (context, value, child) {
-                  final bool loading = value.loading;
+              Consumer2<BoolSetter, UserViewModel>(
+                builder: (context, setter, user, child) {
+                  final bool loading = setter.loading;
                   return Row(
                     children: [
                       AppButton(
                         title: "Login",
                         isloading: loading,
-                        onPressed: () {
-                          _getValidText(context);
+                        onPressed: () async {
+                          await _getValidText(user, context);
                         },
                         isExpanded: true,
                       ),
@@ -118,9 +118,10 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  _getValidText(BuildContext context) {
+  Future _getValidText(
+      UserViewModel usercontroller, BuildContext context) async {
     if (_key.currentState!.validate()) {
-      AuthFunction().loginUser(_emailController.text.trim(),
+      await usercontroller.login(_emailController.text.trim(),
           _passwordController.text.trim(), context);
     }
   }

@@ -53,7 +53,7 @@ class AuthFunction {
       final snapshot = await _firstore
           .collection("user")
           .where("email", isEqualTo: email)
-          .get(); 
+          .get();
       if (snapshot.docs.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
@@ -68,8 +68,13 @@ class AuthFunction {
       } else {
         debugPrint("Email wrong");
       }
-    } catch (e) {
-      debugPrint(e.toString());
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      final error = authERROR(e.code);
+      print("---------=====---------");
+      print(error);
+      print("---------=====---------");
+      // debugPrint(e.toString());
       // AppUtils.flushbarBarMessage(e.toString(), context);
     } finally {
       loading.setloading(false);

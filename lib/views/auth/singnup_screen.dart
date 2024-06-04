@@ -5,7 +5,6 @@ import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/enums/app_enum.dart';
-import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/utils/validator.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
@@ -167,17 +166,6 @@ class _SingnupScreenState extends State<SingnupScreen> {
           phonenumber: int.parse(_phonenumberController.text.trim()),
           address: _addressController.text.trim(),
           profession: professionValue);
-      provider
-          .signUpFirebase(
-              model: user,
-              password: _passwordController.text.trim(),
-              context: context)
-          .then(
-        (value) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, RouteName.appBottomNavigationBar, (route) => false);
-        },
-      );
     }
   }
 }
