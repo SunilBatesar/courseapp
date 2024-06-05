@@ -14,6 +14,7 @@ class UserViewModel extends ChangeNotifier {
   // Call Network Firebase Service
   final _service = NetworkFirebaseService();
   // Call User Repository
+  // ignore: unused_field
   final _repository = UserRepository();
   dynamic _userdata;
   // Get User Data
@@ -25,8 +26,10 @@ class UserViewModel extends ChangeNotifier {
   }
 
   //  SignUp
-  Future signUp(Map<String, dynamic> jsondata) async {
-    final UserModel usersdata = UserModel.fromjson(jsondata);
+  Future signUp(Map<String, dynamic> jsondata, BuildContext context) async {
+    final loading = Provider.of<BoolSetter>(context, listen: false);
+    loading.setloading(true);
+    final UserModel usersdata = UserModel.fromjson(jsondata["data"]);
     try {
       final usercredential = await maindata.networkFirebaseService
           .authenticate(AuthState.SIGNUP, json: {
@@ -35,36 +38,41 @@ class UserViewModel extends ChangeNotifier {
       }) as UserCredential;
       final String id = usercredential.user!.uid;
       if (id.isNotEmpty) {
-        maindata.networkFirebaseService.post(id, usersdata.tomap());
+        await maindata.networkFirebaseService.post(
+            maindata.apis.userdoc(id), usersdata.copyWith(uid: id).tomap());
         _userdata = usersdata.copyWith(uid: id);
-        notifyListeners();
       }
     } catch (e) {
       print(e.toString());
+    } finally {
+      notifyListeners();
+      loading.setloading(false);
     }
   }
 
   //  Login
   Future<void> login(
       String email, String password, BuildContext context) async {
+    final loading = Provider.of<BoolSetter>(context, listen: false);
+    loading.setloading(true);
     try {
-      final user = await maindata.networkFirebaseService
+      final snapshot = await maindata.networkFirebaseService
               .get(maindata.apis.userReference.where("email", isEqualTo: email))
           as QuerySnapshot<Map<String, dynamic>>;
-      if (user.docs.isNotEmpty) {
+      if (snapshot.docs.isNotEmpty) {
         await maindata.networkFirebaseService.authenticate(AuthState.LOGIN,
             json: {"email": email, "password": password}) as UserCredential;
 
-        final UserModel data = UserModel.fromjson(user.docs.first.data());
+        final UserModel data = UserModel.fromjson(snapshot.docs.first.data());
         _userdata = data;
-        notifyListeners();
         Navigator.pushNamedAndRemoveUntil(
             context, RouteName.appBottomNavigationBar, (route) => false);
       }
     } catch (e) {
-      print("========");
       print(e.toString());
-      print("========");
+    } finally {
+      notifyListeners();
+      loading.setloading(false);
     }
   }
 

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:courses_app/data/auth_excaptions.dart';
+import 'package:courses_app/data/app_excaptions.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +32,9 @@ class FirebaseResponseController extends DatabaseController {
       }
     } catch (e) {
       if (e is FirebaseAuthException) {
-        throw InvalidCredentialsException();
+        throw InvalidCredentialsException(e.toString());
       } else if (e is FirebaseException) {
-        throw UnauthorizedException();
+        throw UnauthorizedException(e.toString());
       } else {
         rethrow;
       }
@@ -77,7 +77,7 @@ class userClassControler extends ChangeNotifier {
 
       ratings = UserModel.fromjson(json as Map<String, dynamic>);
     } catch (e) {
-      if (e is AuthExcaptions) {
+      if (e is AppExcaptions) {
         e.message;
       }
       e.toString();

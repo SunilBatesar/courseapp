@@ -157,7 +157,7 @@ class _SingnupScreenState extends State<SingnupScreen> {
     );
   }
 
-  getValidText(UserViewModel provider) {
+  getValidText(UserViewModel provider) async {
     if (_key.currentState!.validate()) {
       final UserModel user = UserModel().copyWith(
           name: _nameController.text.trim(),
@@ -166,6 +166,9 @@ class _SingnupScreenState extends State<SingnupScreen> {
           phonenumber: int.parse(_phonenumberController.text.trim()),
           address: _addressController.text.trim(),
           profession: professionValue);
+      await provider.signUp(
+          {"data": user.tomap(), "password": _passwordController.text.trim()},
+          context);
     }
   }
 }

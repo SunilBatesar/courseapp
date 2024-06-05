@@ -31,7 +31,7 @@ class CourseViewModel extends ChangeNotifier {
       final CourseModel data = await _repository.setCourseRepo(model);
       id = data.id;
       _coursedata.add(data);
-      notifyListeners();
+      notifyListeners(); 
     } catch (e) {
       print(e.toString());
     } finally {
