@@ -38,7 +38,8 @@ class _SplashScreenState extends State<SplashScreen> {
         // Courses Data Get Function Call
         await courseProvider.getCourses(context);
         // Class Data Get Function Call
-        await classProvider.getClass(context);
+        await classProvider.getClass(
+            model: courseProvider.coursedata, context: context);
         // Push Named And RemoveUntil Next Screen (App Bottom NavigationBar)
         Navigator.pushNamedAndRemoveUntil(
             context, RouteName.appBottomNavigationBar, (route) => false);

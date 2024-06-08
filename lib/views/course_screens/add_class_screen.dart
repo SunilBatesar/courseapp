@@ -164,7 +164,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                             datetime: datetimenow.toString(),
                           );
                           // NEW FUNCTION
-                          classprovider
+                          await classprovider
                               .setClass(model: data, context: context)
                               .then((value) {
                             print("ADD CLASS");

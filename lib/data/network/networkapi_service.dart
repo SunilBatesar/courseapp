@@ -4,7 +4,7 @@ import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class NetworkFirebaseService extends FirebaseService {
-  final firebase = FirebaseFirestore.instance;
+  // CALL FIREBASEAUTH INSTANCE (_auth)
   final _auth = FirebaseAuth.instance;
   @override
   Future get(path) {
@@ -45,13 +45,17 @@ class NetworkFirebaseService extends FirebaseService {
 
   @override
   Future authenticate(AuthState state, {Map<String, dynamic>? json}) async {
+    // SET EMAIL AND PASSWORD
     final String email = json!["email"];
     final String password = json["password"];
     try {
+      // CHECK USER AUTHSTATE
       if (state == AuthState.SIGNUP) {
+        //  CREATE USER WITH EMAIL AND PASSWORD AMD RETURN USERCREDENTIAL
         return await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
       } else {
+        //  SIGNIN USER WITH EMAIL AND PASSWORD AMD RETURN USERCREDENTIAL
         return await _auth.signInWithEmailAndPassword(
             email: email, password: password);
       }
