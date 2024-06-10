@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:courses_app/data/app_excaptions.dart';
 import 'package:courses_app/data/network/baseapi_service.dart';
 import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,12 +27,16 @@ class NetworkFirebaseService extends FirebaseService {
   @override
   Future post(path, data) {
     Future<void> response;
-    if (path is CollectionReference) {
-      response = path.add(data);
-      // TODO ;; IMPLEMENT COLLECTION FUNCTIONALITY
-    } else {
-      response = (path as DocumentReference).set(data);
-      // TODO;; IMPLEMENT DOCUEMENT FUNCTIONALITY
+    try {
+      if (path is CollectionReference) {
+        response = path.add(data);
+        // TODO ;; IMPLEMENT COLLECTION FUNCTIONALITY
+      } else {
+        response = (path as DocumentReference).set(data);
+        // TODO;; IMPLEMENT DOCUEMENT FUNCTIONALITY
+      }
+    } catch (e) {
+      rethrow;
     }
 
     return response;
@@ -60,7 +65,7 @@ class NetworkFirebaseService extends FirebaseService {
             email: email, password: password);
       }
     } catch (e) {
-      rethrow;
+      errorFunction(e);
     }
   }
 }

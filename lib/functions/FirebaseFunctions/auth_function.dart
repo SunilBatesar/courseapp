@@ -69,10 +69,8 @@ class AuthFunction {
         debugPrint("Email wrong");
       }
     } on FirebaseAuthException catch (e) {
-      print(e.code);
-      final error = authERROR(e.code);
       print("---------=====---------");
-      print(error);
+      print(e.code);
       print("---------=====---------");
       // debugPrint(e.toString());
       // AppUtils.flushbarBarMessage(e.toString(), context);

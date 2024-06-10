@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
+
 class AppExcaptions implements Exception {
   final String? message;
   final String? prefix;
@@ -8,17 +13,23 @@ class AppExcaptions implements Exception {
   }
 }
 
-class EmailAlreadyUse extends AppExcaptions {
-  EmailAlreadyUse([msg])
-      : super(msg, "The email address is already in use by another account.");
+class AuthException extends AppExcaptions {
+  AuthException([msg]) : super(msg, "UnAuthorized Access!");
 }
 
-class UserNotFound extends AppExcaptions {
-  UserNotFound([msg]) : super(msg, "No user found with this email.");
+class Socketexception extends AppExcaptions {
+  Socketexception([msg]) : super(msg, "No Internet!");
 }
 
-class WrongPassword extends AppExcaptions {
-  WrongPassword([msg])
-      : super(msg,
-            "The password is invalid or the user does not have a password.");
+errorFunction(Object error) {
+  switch (error) {
+    case FirebaseAuthException _:
+      throw AuthException(
+          error.message); // Unauthorized Access! :: invalid auth credentials;
+    case SocketException _:
+      throw Socketexception(error.message);
+    case TimeoutException _:
+    default:
+      throw error;
+  }
 }

@@ -15,7 +15,6 @@ class ClassViewModel extends ChangeNotifier {
   // GET CLASS ALL DATA
   List<ClassModel> get classdata => _classdata;
 
-
   //  SET CLASS DATA FUNCTION
   Future<void> setClass(
       {required ClassModel model, required BuildContext context}) async {

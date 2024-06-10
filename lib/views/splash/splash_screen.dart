@@ -2,7 +2,6 @@ import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:courses_app/view_model/class_viewmodel.dart';
 import 'package:courses_app/view_model/course_viewmodel.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!await rebuild()) return;
     final userProvider = Provider.of<UserViewModel>(context, listen: false);
     final courseProvider = Provider.of<CourseViewModel>(context, listen: false);
-    final classProvider = Provider.of<ClassViewModel>(context, listen: false);
     final id = SPref.getSharedPrefs(SPref.userIDKey);
     Future.delayed(const Duration(milliseconds: 2), () async {
       if (id.isNotEmpty) {
@@ -37,9 +35,6 @@ class _SplashScreenState extends State<SplashScreen> {
         await userProvider.getUserDataFirebase(id, context);
         // Courses Data Get Function Call
         await courseProvider.getCourses(context);
-        // Class Data Get Function Call
-        await classProvider.getClass(
-            model: courseProvider.coursedata, context: context);
         // Push Named And RemoveUntil Next Screen (App Bottom NavigationBar)
         Navigator.pushNamedAndRemoveUntil(
             context, RouteName.appBottomNavigationBar, (route) => false);

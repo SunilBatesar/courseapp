@@ -7,7 +7,6 @@ import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/data/localdata.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasestorage_function.dart';
 import 'package:courses_app/model/all_model.dart';
-import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/course_viewmodel.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
@@ -215,16 +214,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                               userid: user.uid);
 
                           //  NEW FUNCTION
-                          await courseprovider
-                              .setCourse(model: coursedata, context: context)
-                              .then(
-                            (value) {
-                              print("ADD COURSE $value");
-                              Navigator.pushNamed(
-                                  context, RouteName.addClassScreen,
-                                  arguments: value);
-                            },
-                          );
+                          await courseprovider.setCourse(coursedata, context);
 
                           //  OLD Function
                           // await FirebaseFirestoreFunction()
