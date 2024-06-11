@@ -9,19 +9,23 @@ class NetworkFirebaseService extends FirebaseService {
   final _auth = FirebaseAuth.instance;
   @override
   Future get(path) {
-    Future<Object> response;
-    if (path is CollectionReference) {
-      response = path.get();
-      // TODO ;; IMPLEMENT COLLECTION FUNCTIONALITY
-    } else if (path is Query<Map<String, dynamic>>) {
-      response = path.get();
-      // TODO ;; IMPLEMENT WHERE METHOD COLLECTION FUNCTIONALITY
-    } else {
-      response = (path as DocumentReference).get();
-      // TODO;; IMPLEMENT DOCUEMENT FUNCTIONALITY
+    Future<Object>? response;
+    try {
+      if (path is CollectionReference) {
+        response = path.get();
+        // TODO ;; IMPLEMENT COLLECTION FUNCTIONALITY
+      } else if (path is Query<Map<String, dynamic>>) {
+        response = path.get();
+        // TODO ;; IMPLEMENT WHERE METHOD COLLECTION FUNCTIONALITY
+      } else {
+        response = (path as DocumentReference).get();
+        // TODO;; IMPLEMENT DOCUEMENT FUNCTIONALITY
+      }
+    } catch (e) {
+      errorFunction(e);
     }
 
-    return response;
+    return response!;
   }
 
   @override
@@ -44,8 +48,12 @@ class NetworkFirebaseService extends FirebaseService {
 
   @override
   Future update(path, data) {
-    return (path as DocumentReference).update(data);
-    // TODO;; UPDATE DOCUEMENT FUNCTIONALITY
+    try {
+      // TODO;; UPDATE DOCUEMENT FUNCTIONALITY
+      return (path as DocumentReference).update(data);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override

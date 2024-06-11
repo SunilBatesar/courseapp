@@ -1,3 +1,4 @@
+import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/searchtextfield.dart';
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/components/tile/courses_tile.dart';
@@ -14,6 +15,7 @@ import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
@@ -64,8 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final classprovider = Provider.of<ClassViewModel>(context);
     final loading = Provider.of<BoolSetter>(context).loading;
     final userData = Provider.of<UserViewModel>(context).userdata;
-    final maindata = Provider.of<MaincourseViewModel>(context, listen: false);
-    final q = maindata.maincoursedata
+    final alldata = Provider.of<MaincourseViewModel>(context, listen: false);
+    final q = alldata.maincoursedata
         .where((element) =>
             element.coursemodel.coursetype!.toLowerCase() ==
             bottonValuetype.toLowerCase())
@@ -89,6 +91,18 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                AppButton(
+                    title: "title",
+                    onPressed: () async {
+                      await Fluttertoast.showToast(
+                          msg: "This is Center Short Toast",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.cyan,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

@@ -21,14 +21,18 @@ class Socketexception extends AppExcaptions {
   Socketexception([msg]) : super(msg, "No Internet!");
 }
 
+class Timeoutexception extends AppExcaptions {
+  Timeoutexception([msg]) : super(msg, "Timeout Exception!");
+}
+
 errorFunction(Object error) {
   switch (error) {
     case FirebaseAuthException _:
-      throw AuthException(
-          error.message); // Unauthorized Access! :: invalid auth credentials;
+      throw AuthException(error.message);
     case SocketException _:
       throw Socketexception(error.message);
     case TimeoutException _:
+      throw Timeoutexception(error.message);
     default:
       throw error;
   }
