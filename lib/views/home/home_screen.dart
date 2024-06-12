@@ -15,8 +15,8 @@ import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -94,14 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 AppButton(
                     title: "title",
                     onPressed: () async {
-                      await Fluttertoast.showToast(
-                          msg: "This is Center Short Toast",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.cyan,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
+                      Get.snackbar("title", "message");
+                      // await Fluttertoast.showToast(
+                      //     msg: "This is Center Short Toast",
+                      //     toastLength: Toast.LENGTH_SHORT,
+                      //     gravity: ToastGravity.CENTER,
+                      //     timeInSecForIosWeb: 1,
+                      //     backgroundColor: Colors.cyan,
+                      //     textColor: Colors.white,
+                      //     fontSize: 16.0);
                     }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

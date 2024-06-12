@@ -12,6 +12,7 @@ import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 late MainClass maindata;
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: ScreenUtilInit(
-        builder: (context, child) => const MaterialApp(
+        builder: (context, child) => const GetMaterialApp(
           initialRoute: RouteName.splashScreen,
           onGenerateRoute: AppRoutes.generatrRoute,
         ),
