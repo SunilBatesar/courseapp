@@ -1,17 +1,27 @@
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/res/services/app_services.dart';
+import 'package:courses_app/view_model/class_viewmodel.dart';
+import 'package:courses_app/view_model/course_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 
 class CoursesTile extends StatelessWidget {
-  final MainCoursesModel model;
+  final String id;
   final Function onPressed;
-  const CoursesTile({super.key, required this.model, required this.onPressed});
+  const CoursesTile({super.key, required this.id, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
+    final courseprovider = Provider.of<CourseViewModel>(context);
+    final classprovider = Provider.of<ClassViewModel>(context);
+    final model =
+        courseprovider.coursedata.firstWhere((element) => element.id == id);
+    final classdata = classprovider.classdata
+        .where((element) => element.courseid == id)
+        .toList();
     return InkWell(
       onTap: () {
         onPressed();
@@ -30,7 +40,7 @@ class CoursesTile extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20.r),
                   child: Image.network(
-                    model.coursemodel.images!.first,
+                    model.images!.first,
                     height: 150.h,
                     width: AppServices.screenWidth(context),
                     fit: BoxFit.cover,
@@ -87,7 +97,7 @@ class CoursesTile extends StatelessWidget {
                         ),
                         Gap(5.w),
                         Text(
-                          "\$${model.coursemodel.price}",
+                          "\$${model.price}",
                           style: AppTextTheme.fs16Medium,
                         ),
                       ],
@@ -98,13 +108,13 @@ class CoursesTile extends StatelessWidget {
             ),
             Gap(25.h),
             Text(
-              model.coursemodel.name!,
+              model.name!,
               style:
                   AppTextTheme.fs18Medium.copyWith(color: AppColor.raisinBlack),
             ),
             Gap(5.h),
             Text(
-              "${model.classmodel.length} Sections .${model.coursemodel.duration} Hours",
+              "${classdata.length} Sections .${model.duration} Hours",
               style:
                   AppTextTheme.fs14Normal.copyWith(color: AppColor.frenchGray),
             ),

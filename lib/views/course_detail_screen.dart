@@ -2,16 +2,23 @@ import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/res/services/app_services.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
+import 'package:courses_app/view_model/course_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class CourseDetailScreen extends StatelessWidget {
-  final MainCoursesModel model;
-  const CourseDetailScreen({super.key, required this.model});
+  CourseDetailScreen({super.key});
+  final courseId = Get.arguments["id"];
 
   @override
   Widget build(BuildContext context) {
+    final courseprovider = Provider.of<CourseViewModel>(context);
+    final model = courseprovider.coursedata
+        .firstWhere((element) => element.id == courseId.toString());
+
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       body: SafeArea(
@@ -29,7 +36,7 @@ class CourseDetailScreen extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20.r),
                         child: Image.network(
-                          model.coursemodel.images!.first,
+                          model.images!.first,
                           height: 240.h,
                           width: AppServices.screenWidth(context),
                           fit: BoxFit.fill,
@@ -118,7 +125,7 @@ class CourseDetailScreen extends StatelessWidget {
                               ),
                               Gap(5.w),
                               Text(
-                                "\$${model.coursemodel.price}",
+                                "\$${model.price}",
                                 style: AppTextTheme.fs16Medium,
                               ),
                             ],
@@ -129,7 +136,7 @@ class CourseDetailScreen extends StatelessWidget {
                   ),
                   Gap(30.h),
                   Text(
-                    model.coursemodel.name!,
+                    model.name!,
                     style: AppTextTheme.fs25SemiBold
                         .copyWith(color: AppColor.raisinBlack),
                   ),
@@ -184,7 +191,7 @@ class CourseDetailScreen extends StatelessWidget {
                   ),
                   Gap(10.h),
                   Text(
-                    model.coursemodel.description!,
+                    model.description!,
                     style: AppTextTheme.fs16Medium
                         .copyWith(color: AppColor.frenchGray),
                   ),

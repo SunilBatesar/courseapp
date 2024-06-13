@@ -11,12 +11,12 @@ import 'package:courses_app/view_model/class_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddClassScreen extends StatefulWidget {
-  final String courseid;
-  const AddClassScreen({super.key, required this.courseid});
+  const AddClassScreen({super.key});
 
   @override
   State<AddClassScreen> createState() => _AddClassScreenState();
@@ -27,7 +27,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
   final _nameController = TextEditingController();
   final _durationController = TextEditingController();
   final _descriptionController = TextEditingController();
-
+  final courseid = Get.arguments["courseid"];
   //
   final ImagePicker imagePicker = ImagePicker();
   List<XFile>? imageFileList = [];
@@ -160,7 +160,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                             duration: _durationController.text.trim(),
                             description: _descriptionController.text.trim(),
                             images: imageURLlist,
-                            courseid: widget.courseid,
+                            courseid: courseid,
                             datetime: datetimenow.toString(),
                           );
                           // NEW FUNCTION

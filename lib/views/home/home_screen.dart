@@ -10,7 +10,6 @@ import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/class_viewmodel.dart';
 import 'package:courses_app/view_model/course_viewmodel.dart';
-import 'package:courses_app/view_model/maincourse_viewmodel.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -31,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int buttonIndex = 0;
   String bottonValuetype = "";
   String searchOnchanged = "";
-  List<MainCoursesModel> filterdataList = [];
+  List<CourseModel> filterdataList = [];
 
   @override
   void initState() {
@@ -41,8 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getdata() async {
     if (!await rebuild()) return;
-    final provider = Provider.of<MaincourseViewModel>(context, listen: false);
-    provider.addcourseAndclass(context);
     bottonValuetype = LocalData.filterlist.first["type"];
     setState(() {});
   }
@@ -66,16 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final classprovider = Provider.of<ClassViewModel>(context);
     final loading = Provider.of<BoolSetter>(context).loading;
     final userData = Provider.of<UserViewModel>(context).userdata;
-    final alldata = Provider.of<MaincourseViewModel>(context, listen: false);
-    final q = alldata.maincoursedata
+    final q = courseprovider.coursedata
         .where((element) =>
-            element.coursemodel.coursetype!.toLowerCase() ==
-            bottonValuetype.toLowerCase())
+            element.coursetype!.toLowerCase() == bottonValuetype.toLowerCase())
         .toList();
     filterdataList = searchOnchanged.isEmpty
         ? q
         : q
-            .where((e) => e.coursemodel.name!
+            .where((e) => e.name!
                 .toLowerCase()
                 .trim()
                 .contains(searchOnchanged.toLowerCase().trim()))
@@ -210,11 +205,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                     padding: EdgeInsets.only(bottom: 15.h),
                                     child: CoursesTile(
                                       onPressed: () {
-                                        Navigator.pushNamed(context,
+                                        Get.toNamed(
                                             RouteName.courseDetailScreen,
-                                            arguments: filterdataList[index]);
+                                            arguments: {
+                                              "id": filterdataList[index].id
+                                            });
+                                        // Navigator.pushNamed(context,
+                                        //     RouteName.courseDetailScreen,
+                                        //     arguments: filterdataList[index]);
                                       },
-                                      model: filterdataList[index],
+                                      id: filterdataList[index].id!,
                                     ),
                                   ),
                                 )

@@ -88,14 +88,6 @@ class UserModel {
             .toList();
 }
 
-// Main Courses Model
-class MainCoursesModel {
-  CourseModel coursemodel;
-  List<ClassModel> classmodel;
-
-  MainCoursesModel({required this.coursemodel, required this.classmodel});
-}
-
 //  Course Model
 class CourseModel {
   String? id;

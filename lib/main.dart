@@ -7,7 +7,6 @@ import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:courses_app/view_model/class_viewmodel.dart';
 import 'package:courses_app/view_model/course_viewmodel.dart';
-import 'package:courses_app/view_model/maincourse_viewmodel.dart';
 import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => MaincourseViewModel(),
-        ),
+     
         ChangeNotifierProvider(
           create: (context) => CourseViewModel(),
         ),
@@ -50,9 +47,11 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: ScreenUtilInit(
-        builder: (context, child) => const GetMaterialApp(
+        builder: (context, child) => GetMaterialApp(
+          // initialRoute: RouteName.splashScreen,
+          // onGenerateRoute: AppRoutes.generatrRoute,
           initialRoute: RouteName.splashScreen,
-          onGenerateRoute: AppRoutes.generatrRoute,
+          getPages: getXRouteList,
         ),
         designSize: Size(AppConfig.screenWidth, AppConfig.screenHeight),
       ),
