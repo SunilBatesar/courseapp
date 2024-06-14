@@ -1,8 +1,8 @@
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/controllers/class_controller.dart';
+import 'package:courses_app/controllers/course_controller.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/res/services/app_services.dart';
-import 'package:courses_app/view_model/class_viewmodel.dart';
-import 'package:courses_app/view_model/course_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -15,8 +15,8 @@ class CoursesTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final courseprovider = Provider.of<CourseViewModel>(context);
-    final classprovider = Provider.of<ClassViewModel>(context);
+    final courseprovider = Provider.of<CourseController>(context);
+    final classprovider = Provider.of<ClassController>(context);
     final model =
         courseprovider.coursedata.firstWhere((element) => element.id == id);
     final classdata = classprovider.classdata

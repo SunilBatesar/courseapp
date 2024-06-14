@@ -1,13 +1,14 @@
 import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/controllers/course_controller.dart';
+import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:courses_app/view_model/course_viewmodel.dart';
-import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -26,8 +27,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextScreen() async {
     if (!await rebuild()) return;
-    final userProvider = Provider.of<UserViewModel>(context, listen: false);
-    final courseProvider = Provider.of<CourseViewModel>(context, listen: false);
+    final userProvider = Provider.of<UserController>(context, listen: false);
+    final courseProvider =
+        Provider.of<CourseController>(context, listen: false);
     final id = SPref.getSharedPrefs(SPref.userIDKey);
     Future.delayed(const Duration(milliseconds: 2), () async {
       if (id.isNotEmpty) {
@@ -35,13 +37,11 @@ class _SplashScreenState extends State<SplashScreen> {
         await userProvider.getUserDataFirebase(id, context);
         // Courses Data Get Function Call
         await courseProvider.getCourses(context);
-        // Push Named And RemoveUntil Next Screen (App Bottom NavigationBar)
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteName.appBottomNavigationBar, (route) => false);
+        // OFF ALL Next Screen (App Bottom NavigationBar)
+        Get.offAllNamed(RouteName.appBottomNavigationBar);
       } else {
-        // Push Named And RemoveUntil Next Screen (Login Screen)
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteName.loginScreen, (route) => false);
+        // OFF ALL Next Screen (Login Screen)
+        Get.offAllNamed(RouteName.loginScreen);
       }
     });
   }

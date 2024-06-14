@@ -3,7 +3,7 @@ import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../view_model/user_viewmodel.dart';
+import '../controllers/user_controller.dart';
 
 class UserModel {
   String uid, name, address, dateofBirth, image;
@@ -24,7 +24,7 @@ class UserModel {
       this.couresesid});
 
   static bool checkIsStudent(BuildContext context) {
-    final userProvider = Provider.of<UserViewModel>(context, listen: false);
+    final userProvider = Provider.of<UserController>(context, listen: false);
     return userProvider.userdata.profession == Profession.Student;
   }
 

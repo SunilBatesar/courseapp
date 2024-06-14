@@ -59,18 +59,20 @@ class NetworkFirebaseService extends FirebaseService {
   @override
   Future authenticate(AuthState state, {Map<String, dynamic>? json}) async {
     // SET EMAIL AND PASSWORD
-    final String email = json!["email"];
-    final String password = json["password"];
+    final String email = json != null ? json["email"] : "";
+    final String password = json != null ? json["password"] : "";
     try {
       // CHECK USER AUTHSTATE
       if (state == AuthState.SIGNUP) {
         //  CREATE USER WITH EMAIL AND PASSWORD AMD RETURN USERCREDENTIAL
         return await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-      } else {
+      } else if (state == AuthState.LOGIN) {
         //  SIGNIN USER WITH EMAIL AND PASSWORD AMD RETURN USERCREDENTIAL
         return await _auth.signInWithEmailAndPassword(
             email: email, password: password);
+      } else {
+        await _auth.signOut();
       }
     } catch (e) {
       errorFunction(e);

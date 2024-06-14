@@ -1,13 +1,13 @@
 import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/classes/main_class.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
+import 'package:courses_app/controllers/class_controller.dart';
+import 'package:courses_app/controllers/course_controller.dart';
+import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/firebase_options.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:courses_app/view_model/boolsetter.dart';
-import 'package:courses_app/view_model/class_viewmodel.dart';
-import 'package:courses_app/view_model/course_viewmodel.dart';
-import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,15 +32,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-     
         ChangeNotifierProvider(
-          create: (context) => CourseViewModel(),
+          create: (context) => CourseController(),
         ),
         ChangeNotifierProvider(
-          create: (context) => ClassViewModel(),
+          create: (context) => ClassController(),
         ),
         ChangeNotifierProvider(
-          create: (context) => UserViewModel(),
+          create: (context) => UserController(),
         ),
         ChangeNotifierProvider(
           create: (context) => BoolSetter(),

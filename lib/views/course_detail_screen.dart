@@ -1,8 +1,8 @@
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/controllers/course_controller.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/res/services/app_services.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:courses_app/view_model/course_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -15,7 +15,7 @@ class CourseDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final courseprovider = Provider.of<CourseViewModel>(context);
+    final courseprovider = Provider.of<CourseController>(context);
     final model = courseprovider.coursedata
         .firstWhere((element) => element.id == courseId.toString());
 
@@ -47,7 +47,7 @@ class CourseDetailScreen extends StatelessWidget {
                         top: 15.sp,
                         child: InkWell(
                           onTap: () {
-                            AppServices.popView(context);
+                            Get.back();
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -227,7 +227,7 @@ class CourseDetailScreen extends StatelessWidget {
                 onTap: () {
                   UserModel.checkIsStudent(context)
                       ? null
-                      : Navigator.pushNamed(context, RouteName.addCourseScreen);
+                      : Get.toNamed(RouteName.addCourseScreen);
                 },
                 child: Container(
                   height: 60.h,

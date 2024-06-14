@@ -8,6 +8,5 @@ class AppServices {
 
   static screenWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
-  //  Pop ------
-  static popView(BuildContext context) => Navigator.pop(context);
+
 }

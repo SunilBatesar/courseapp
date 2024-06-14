@@ -2,15 +2,16 @@ import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
+import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:courses_app/utils/validator.dart';
-import 'package:courses_app/view_model/boolsetter.dart';
-import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -86,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Gap(40.h),
-              Consumer2<BoolSetter, UserViewModel>(
+              Consumer2<BoolSetter, UserController>(
                 builder: (context, setter, user, child) {
                   final bool loading = setter.loading;
                   return Row(
@@ -113,8 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.pushNamed(
-                                  context, RouteName.singnupScreen);
+                              Get.toNamed(RouteName.singnupScreen);
                             },
                           text: "  Create new account.",
                           style: const TextStyle(color: AppColor.oringe))
@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future _getValidText(
-      UserViewModel usercontroller, BuildContext context) async {
+      UserController usercontroller, BuildContext context) async {
     if (_key.currentState!.validate()) {
       await usercontroller.login(_emailController.text.trim(),
           _passwordController.text.trim(), context);

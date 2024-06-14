@@ -1,16 +1,15 @@
-import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/searchtextfield.dart';
 import 'package:courses_app/components/style_seet.dart';
 import 'package:courses_app/components/tile/courses_tile.dart';
 import 'package:courses_app/components/tile/loding_tile.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
+import 'package:courses_app/controllers/class_controller.dart';
+import 'package:courses_app/controllers/course_controller.dart';
+import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/data/localdata.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:courses_app/view_model/boolsetter.dart';
-import 'package:courses_app/view_model/class_viewmodel.dart';
-import 'package:courses_app/view_model/course_viewmodel.dart';
-import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -59,10 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final courseprovider = Provider.of<CourseViewModel>(context);
-    final classprovider = Provider.of<ClassViewModel>(context);
+    final courseprovider = Provider.of<CourseController>(context);
+    final classprovider = Provider.of<ClassController>(context);
     final loading = Provider.of<BoolSetter>(context).loading;
-    final userData = Provider.of<UserViewModel>(context).userdata;
+    final userData = Provider.of<UserController>(context).userdata;
     final q = courseprovider.coursedata
         .where((element) =>
             element.coursetype!.toLowerCase() == bottonValuetype.toLowerCase())
@@ -86,19 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppButton(
-                    title: "title",
-                    onPressed: () async {
-                      Get.snackbar("title", "message");
-                      // await Fluttertoast.showToast(
-                      //     msg: "This is Center Short Toast",
-                      //     toastLength: Toast.LENGTH_SHORT,
-                      //     gravity: ToastGravity.CENTER,
-                      //     timeInSecForIosWeb: 1,
-                      //     backgroundColor: Colors.cyan,
-                      //     textColor: Colors.white,
-                      //     fontSize: 16.0);
-                    }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -210,9 +196,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                             arguments: {
                                               "id": filterdataList[index].id
                                             });
-                                        // Navigator.pushNamed(context,
-                                        //     RouteName.courseDetailScreen,
-                                        //     arguments: filterdataList[index]);
                                       },
                                       id: filterdataList[index].id!,
                                     ),

@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:courses_app/main.dart';
 import 'package:courses_app/model/all_model.dart';
-import 'package:courses_app/view_model/boolsetter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class ClassViewModel extends ChangeNotifier {
+class ClassController extends ChangeNotifier {
   // PRIVATE CLASS DATA
   List<ClassModel> _classdata = [];
   // GET CLASS ALL DATA

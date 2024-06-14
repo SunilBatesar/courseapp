@@ -1,12 +1,12 @@
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/data/localdata.dart';
-import 'package:courses_app/functions/FirebaseFunctions/auth_function.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -14,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userprovider = Provider.of<UserViewModel>(context).userdata;
+    final userprovider = Provider.of<UserController>(context).userdata;
 
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
@@ -74,13 +74,13 @@ class ProfileScreen extends StatelessWidget {
   setTilevalue(String value, BuildContext context) {
     switch (value) {
       case "profile":
-        return Navigator.pushNamed(context, RouteName.editProfileScreen);
+        return Get.toNamed(RouteName.editProfileScreen);
       case "help":
         return;
       case "Aboutus":
         return;
       case "Log out":
-        return AuthFunction().logout(context);
+        return UserController().logout();
       default:
     }
   }

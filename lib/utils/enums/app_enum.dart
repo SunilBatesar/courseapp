@@ -3,7 +3,4 @@ enum Profession {
   Teacher;
 }
 
-enum AuthState {
-  LOGIN,
-  SIGNUP;
-}
+enum AuthState { LOGIN, SIGNUP, LOGOUT}

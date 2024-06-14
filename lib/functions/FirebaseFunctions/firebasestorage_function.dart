@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:courses_app/view_model/boolsetter.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

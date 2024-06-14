@@ -1,6 +1,7 @@
 import 'package:courses_app/components/style_seet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CustomAppbar extends AppBar {
   final BuildContext context;
@@ -15,7 +16,7 @@ class CustomAppbar extends AppBar {
   Widget? get leading => automaticallyImplyLeading
       ? IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
           icon: const Icon(Icons.arrow_back_ios))
       : null;

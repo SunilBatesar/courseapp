@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
+import 'package:courses_app/controllers/class_controller.dart';
+import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/main.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:courses_app/view_model/boolsetter.dart';
-import 'package:courses_app/view_model/class_viewmodel.dart';
-import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class CourseViewModel extends ChangeNotifier {
+class CourseController extends ChangeNotifier {
   List<CourseModel> _coursedata = [];
   List<CourseModel> get coursedata => _coursedata;
   setCourseData(List<CourseModel> model) {
@@ -57,9 +57,9 @@ class CourseViewModel extends ChangeNotifier {
   // GET COURSES DATA FUNCTION
   Future<void> getCourses(BuildContext context) async {
     // CLASS CONTROLLER CALL
-    final classprovider = Provider.of<ClassViewModel>(context, listen: false);
+    final classprovider = Provider.of<ClassController>(context, listen: false);
     // CLASS CONTROLLER CALL
-    final userprovider = Provider.of<UserViewModel>(context, listen: false);
+    final userprovider = Provider.of<UserController>(context, listen: false);
     // SET LOADING
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);

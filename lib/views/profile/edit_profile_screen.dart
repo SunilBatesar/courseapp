@@ -4,17 +4,17 @@ import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
+import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasefirestore_functions.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasestorage_function.dart';
 import 'package:courses_app/functions/imagepicker_function.dart';
-import 'package:courses_app/res/services/app_services.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/validator.dart';
-import 'package:courses_app/view_model/boolsetter.dart';
-import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -45,7 +45,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   addValueAuto() {
-    final user = Provider.of<UserViewModel>(context, listen: false).userdata;
+    final user = Provider.of<UserController>(context, listen: false).userdata;
     userDpURL = user.image;
     _nameController.text = user.name;
     _dateofBirthController.text =
@@ -171,12 +171,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               AppButton(
                 title: "Crope Image",
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const Cropeimage(title: "Image Crope"),
-                      ));
+                  Get.to(() => const Cropeimage(title: "Image Crope"));
                 },
               ),
               Gap(20.h),
@@ -202,7 +197,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   _getValidText(BuildContext context) async {
     final userprovider =
-        Provider.of<UserViewModel>(context, listen: false).userdata;
+        Provider.of<UserController>(context, listen: false).userdata;
     if (_key.currentState!.validate()) {
       String urlimage = userDpURL!;
       if (imagefile != null && imagefile!.path.isNotEmpty) {
@@ -223,7 +218,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             image: urlimage,
           ),
           context);
-      AppServices.popView(context);
+      Get.back();
     }
   }
 }

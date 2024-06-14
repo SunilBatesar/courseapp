@@ -4,12 +4,12 @@ import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
+import 'package:courses_app/controllers/course_controller.dart';
+import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/data/localdata.dart';
 import 'package:courses_app/functions/FirebaseFunctions/firebasestorage_function.dart';
 import 'package:courses_app/model/all_model.dart';
-import 'package:courses_app/view_model/boolsetter.dart';
-import 'package:courses_app/view_model/course_viewmodel.dart';
-import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -52,8 +52,8 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserViewModel>(context).userdata;
-    final courseprovider = Provider.of<CourseViewModel>(context);
+    final user = Provider.of<UserController>(context).userdata;
+    final courseprovider = Provider.of<CourseController>(context);
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       appBar: CustomAppbar(
@@ -213,20 +213,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                               images: imageURLlist,
                               userid: user.uid);
 
-                          //  NEW FUNCTION
                           await courseprovider.setCourse(coursedata, context);
-
-                          //  OLD Function
-                          // await FirebaseFirestoreFunction()
-                          //     .setCourseDataFirestore(coursedata, context)
-                          //     .then(
-                          //   (value) {
-                          //     print("Add Course");
-                          //     Navigator.pushNamed(
-                          //         context, RouteName.addClassScreen,
-                          //         arguments: value);
-                          //   },
-                          // );
                         },
                       )
                     ],

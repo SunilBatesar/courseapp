@@ -2,12 +2,12 @@ import 'package:courses_app/components/all_buttons/appbutton.dart';
 import 'package:courses_app/components/alltextformfield/common_text_field.dart';
 import 'package:courses_app/components/custom_appbar.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
+import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:courses_app/utils/validator.dart';
-import 'package:courses_app/view_model/boolsetter.dart';
-import 'package:courses_app/view_model/user_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -133,7 +133,7 @@ class _SingnupScreenState extends State<SingnupScreen> {
                 ),
               ),
               Gap(40.h),
-              Consumer2<BoolSetter, UserViewModel>(
+              Consumer2<BoolSetter, UserController>(
                 builder: (context, setter, user, child) {
                   final bool loading = setter.loading;
                   return Row(
@@ -157,7 +157,7 @@ class _SingnupScreenState extends State<SingnupScreen> {
     );
   }
 
-  getValidText(UserViewModel provider) async {
+  getValidText(UserController provider) async {
     if (_key.currentState!.validate()) {
       final UserModel user = UserModel().copyWith(
           name: _nameController.text.trim(),

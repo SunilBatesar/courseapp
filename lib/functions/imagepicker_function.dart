@@ -7,6 +7,7 @@ import 'package:crop_image/crop_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 Future<String> getImageFormGallery() async {
@@ -50,7 +51,7 @@ imageSelectBottomshit(Function(File) file, BuildContext context) {
                 onPressed: () async {
                   File imagefile = File(await getImageFormCamera());
                   file(imagefile);
-                  AppServices.popView(context);
+                  Get.back();
                 },
                 icon: Icon(
                   Icons.camera,
@@ -67,7 +68,7 @@ imageSelectBottomshit(Function(File) file, BuildContext context) {
                 onPressed: () async {
                   File imagefile = File(await getImageFormGallery());
                   file(imagefile);
-                  AppServices.popView(context);
+                  Get.back();
                 },
                 icon: Icon(
                   Icons.image,
@@ -82,7 +83,7 @@ imageSelectBottomshit(Function(File) file, BuildContext context) {
             Gap(10.h),
             TextButton.icon(
                 onPressed: () {
-                  AppServices.popView(context);
+                  Get.back();
                 },
                 icon: Icon(
                   Icons.delete,
@@ -97,7 +98,7 @@ imageSelectBottomshit(Function(File) file, BuildContext context) {
             Gap(10.h),
             TextButton.icon(
                 onPressed: () {
-                  AppServices.popView(context);
+                  Get.back();
                 },
                 icon: Icon(
                   Icons.close,

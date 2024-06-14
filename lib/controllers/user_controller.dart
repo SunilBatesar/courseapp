@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:courses_app/Preferences/sharedpreferences.dart';
-import 'package:courses_app/data/app_excaptions.dart';
+import 'package:courses_app/controllers/boolsetter.dart';
+import 'package:courses_app/controllers/course_controller.dart';
 import 'package:courses_app/data/network/networkapi_service.dart';
 import 'package:courses_app/main.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:courses_app/view_model/boolsetter.dart';
-import 'package:courses_app/view_model/course_viewmodel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-class UserViewModel extends ChangeNotifier {
+class UserController extends ChangeNotifier {
   // Call Network Firebase Service
   final _service = NetworkFirebaseService();
   dynamic _userdata;
@@ -27,7 +27,8 @@ class UserViewModel extends ChangeNotifier {
   //  SignUp
   Future signUp(Map<String, dynamic> jsondata, BuildContext context) async {
     // CALL COURSE CONTROLLER
-    final courseprovider = Provider.of<CourseViewModel>(context, listen: false);
+    final courseprovider =
+        Provider.of<CourseController>(context, listen: false);
     // LODING SET
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
@@ -52,9 +53,8 @@ class UserViewModel extends ChangeNotifier {
         await SPref.setSharedPrefs(SPref.userIDKey, id);
         // CALL GET COURSES FUNCTION
         courseprovider.getCourses(context);
-        // AND PUSH NEXT SCREEN (APP BOTTOMNAVIGATIONBAR)
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteName.appBottomNavigationBar, (route) => false);
+        // OFF ALL SCREEN (APP BOTTOMNAVIGATIONBAR)
+        Get.offAllNamed(RouteName.appBottomNavigationBar);
       }
     } catch (e) {
       print(e.toString());
@@ -69,7 +69,8 @@ class UserViewModel extends ChangeNotifier {
   Future<void> login(
       String email, String password, BuildContext context) async {
     // CALL COURSE CONTROLLER
-    final courseprovider = Provider.of<CourseViewModel>(context, listen: false);
+    final courseprovider =
+        Provider.of<CourseController>(context, listen: false);
     // LOADING SET
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
@@ -93,9 +94,8 @@ class UserViewModel extends ChangeNotifier {
         _userdata = data;
         // CALL GET COURSES FUNCTION
         courseprovider.getCourses(context);
-        // AND PUSH NEXT SCREEN (AAP BOTTOMNAVIGATIONBAR)
-        Navigator.pushNamedAndRemoveUntil(
-            context, RouteName.appBottomNavigationBar, (route) => false);
+        // OFF ALL SCREEN (APP BOTTOMNAVIGATIONBAR)
+        Get.offAllNamed(RouteName.appBottomNavigationBar);
       }
     } catch (e) {
       print(e.toString());
@@ -116,14 +116,28 @@ class UserViewModel extends ChangeNotifier {
       if (snapshot.id.isNotEmpty) {
         final UserModel data = UserModel.fromjson(snapshot.data()!);
         _userdata = data;
-        notifyListeners();
       }
     } catch (e) {
       print(e);
     } finally {
+      notifyListeners();
       loading.setloading(false);
     }
   }
-}
 
- 
+  // LOGOUT
+  Future<void> logout() async {
+    try {
+      await _service.authenticate(AuthState.LOGOUT).then(
+        (value) async {
+          await SPref.removSharedPrefs(SPref.userIDKey);
+          await Get.offNamedUntil(RouteName.loginScreen, (route) => false);
+        },
+      );
+    } catch (e) {
+      print("--------");
+      print(e.toString());
+      print("--------");
+    }
+  }
+}
