@@ -3,6 +3,7 @@ import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class FirebaseFirestoreFunction {
@@ -13,7 +14,7 @@ class FirebaseFirestoreFunction {
 
   Future<void> userDataUpdateFirestore(
       UserModel model, BuildContext context) async {
-    final provider = Provider.of<UserController>(context, listen: false);
+    final provider = Get.find<UserController>();
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);
     try {

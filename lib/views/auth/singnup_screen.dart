@@ -11,6 +11,7 @@ import 'package:courses_app/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class SingnupScreen extends StatefulWidget {
@@ -33,6 +34,7 @@ class _SingnupScreenState extends State<SingnupScreen> {
   final _dateofBirthController = TextEditingController();
   final _phonenumberController = TextEditingController();
   final _addressController = TextEditingController();
+  final usercontroller = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,8 +135,8 @@ class _SingnupScreenState extends State<SingnupScreen> {
                 ),
               ),
               Gap(40.h),
-              Consumer2<BoolSetter, UserController>(
-                builder: (context, setter, user, child) {
+              Consumer<BoolSetter>(
+                builder: (context, setter, child) {
                   final bool loading = setter.loading;
                   return Row(
                     children: [
@@ -142,7 +144,7 @@ class _SingnupScreenState extends State<SingnupScreen> {
                         title: "Sing Up",
                         isloading: loading,
                         onPressed: () {
-                          getValidText(user);
+                          getValidText(usercontroller);
                         },
                         isExpanded: true,
                       ),
@@ -157,7 +159,7 @@ class _SingnupScreenState extends State<SingnupScreen> {
     );
   }
 
-  getValidText(UserController provider) async {
+  getValidText(UserController controller) async {
     if (_key.currentState!.validate()) {
       final UserModel user = UserModel().copyWith(
           name: _nameController.text.trim(),
@@ -166,7 +168,7 @@ class _SingnupScreenState extends State<SingnupScreen> {
           phonenumber: int.parse(_phonenumberController.text.trim()),
           address: _addressController.text.trim(),
           profession: professionValue);
-      await provider.signUp(
+      await controller.signUp(
           {"data": user.tomap(), "password": _passwordController.text.trim()},
           context);
     }

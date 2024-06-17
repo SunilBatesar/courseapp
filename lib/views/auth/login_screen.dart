@@ -29,7 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
 
   final _passwordController = TextEditingController();
-
+  
+  final userController = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,8 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Gap(40.h),
-              Consumer2<BoolSetter, UserController>(
-                builder: (context, setter, user, child) {
+              Consumer<BoolSetter>(
+                builder: (context, setter, child) {
                   final bool loading = setter.loading;
                   return Row(
                     children: [
@@ -96,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: "Login",
                         isloading: loading,
                         onPressed: () async {
-                          await _getValidText(user, context);
+                          await _getValidText(userController, context);
                         },
                         isExpanded: true,
                       ),
@@ -128,9 +129,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future _getValidText(
-      UserController usercontroller, BuildContext context) async {
+      UserController userc, BuildContext context) async {
     if (_key.currentState!.validate()) {
-      await usercontroller.login(_emailController.text.trim(),
+      await userc.login(_emailController.text.trim(),
           _passwordController.text.trim(), context);
     }
   }

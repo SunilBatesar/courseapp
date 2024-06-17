@@ -56,12 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return true;
   }
 
+  final userData = Get.find<UserController>().userdata;
   @override
   Widget build(BuildContext context) {
     final courseprovider = Provider.of<CourseController>(context);
     final classprovider = Provider.of<ClassController>(context);
     final loading = Provider.of<BoolSetter>(context).loading;
-    final userData = Provider.of<UserController>(context).userdata;
     final q = courseprovider.coursedata
         .where((element) =>
             element.coursetype!.toLowerCase() == bottonValuetype.toLowerCase())

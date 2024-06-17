@@ -7,14 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final userprovider = Provider.of<UserController>(context).userdata;
+    final userprovider = Get.find<UserController>().userdata;
 
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
@@ -22,25 +21,33 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ClipRRect(
-              borderRadius: BorderRadius.circular(1000),
-              child: userprovider.image.isNotEmpty
-                  ? Image.network(
-                      userprovider.image,
-                      height: 100.sp,
-                      width: 100.sp,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      AppConfig.applogo,
-                      height: 100.sp,
-                      width: 100.sp,
-                      fit: BoxFit.cover,
-                    )),
-          Gap(20.h),
-          Text(
-            userprovider.name,
-            style: AppTextTheme.fs20Medium,
+          GetBuilder<UserController>(
+            builder: (controller) {
+              return Column(
+                children: [
+                  ClipRRect(
+                      borderRadius: BorderRadius.circular(1000),
+                      child: controller.userdata.image.isNotEmpty
+                          ? Image.network(
+                              controller.userdata.image,
+                              height: 100.sp,
+                              width: 100.sp,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(
+                              AppConfig.applogo,
+                              height: 100.sp,
+                              width: 100.sp,
+                              fit: BoxFit.cover,
+                            )),
+                  Gap(20.h),
+                  Text(
+                    controller.userdata.name,
+                    style: AppTextTheme.fs20Medium,
+                  ),
+                ],
+              );
+            },
           ),
           Gap(20.h),
           ...List.generate(
@@ -80,7 +87,7 @@ class ProfileScreen extends StatelessWidget {
       case "Aboutus":
         return;
       case "Log out":
-        return UserController().logout();
+        return Get.find<UserController>().logout();
       default:
     }
   }

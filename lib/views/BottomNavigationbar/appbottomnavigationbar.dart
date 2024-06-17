@@ -5,6 +5,7 @@ import 'package:courses_app/views/home/home_screen.dart';
 import 'package:courses_app/views/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({super.key});
@@ -23,56 +24,72 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(color: AppColor.raisinBlack, blurRadius: 5)
-            ],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        print("--------$didPop");
+        if (index == 0 && context.mounted) {
+          print("---------");
+          Get.back();
+          Navigator.pop(context);
+          print("-----====----");
+        } else {
+          index = 0;
+          setState(() {});
+        }
+      },
+      child: Scaffold(
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+              boxShadow: const [
+                BoxShadow(color: AppColor.raisinBlack, blurRadius: 5)
+              ],
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r))),
+          child: ClipRRect(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20.r),
-                topRight: Radius.circular(20.r))),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r)),
-          child: BottomNavigationBar(
-              currentIndex: index,
-              onTap: (value) => setState(() {
-                    index = value;
-                  }),
-              selectedLabelStyle: const TextStyle(fontSize: 0),
-              unselectedLabelStyle: const TextStyle(fontSize: 0),
-              selectedItemColor: AppColor.raisinBlack,
-              unselectedItemColor: AppColor.frenchGray,
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.home,
-                      size: 24.sp,
-                    ),
-                    label: ""),
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.explore,
-                      size: 24.sp,
-                    ),
-                    label: ""),
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.menu_book_outlined,
-                      size: 24.sp,
-                    ),
-                    label: ""),
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.person,
-                      size: 24.sp,
-                    ),
-                    label: ""),
-              ]),
+                topRight: Radius.circular(20.r)),
+            child: BottomNavigationBar(
+                currentIndex: index,
+                onTap: (value) => setState(() {
+                      index = value;
+                    }),
+                selectedLabelStyle: const TextStyle(fontSize: 0),
+                unselectedLabelStyle: const TextStyle(fontSize: 0),
+                selectedItemColor: AppColor.raisinBlack,
+                unselectedItemColor: AppColor.frenchGray,
+                items: [
+                  BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.home,
+                        size: 24.sp,
+                      ),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.explore,
+                        size: 24.sp,
+                      ),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.menu_book_outlined,
+                        size: 24.sp,
+                      ),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.person,
+                        size: 24.sp,
+                      ),
+                      label: ""),
+                ]),
+          ),
         ),
+        body: screens[index],
       ),
-      body: screens[index],
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class CourseController extends ChangeNotifier {
@@ -59,7 +60,7 @@ class CourseController extends ChangeNotifier {
     // CLASS CONTROLLER CALL
     final classprovider = Provider.of<ClassController>(context, listen: false);
     // CLASS CONTROLLER CALL
-    final userprovider = Provider.of<UserController>(context, listen: false);
+    final userprovider = Get.find<UserController>();
     // SET LOADING
     final loading = Provider.of<BoolSetter>(context, listen: false);
     loading.setloading(true);

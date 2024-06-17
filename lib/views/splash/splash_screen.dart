@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   nextScreen() async {
     if (!await rebuild()) return;
-    final userProvider = Provider.of<UserController>(context, listen: false);
+    final userProvider = Get.find<UserController>();
     final courseProvider =
         Provider.of<CourseController>(context, listen: false);
     final id = SPref.getSharedPrefs(SPref.userIDKey);

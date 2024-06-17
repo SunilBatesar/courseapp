@@ -4,7 +4,7 @@ import 'package:courses_app/views/BottomNavigationbar/user_type_screen.dart';
 import 'package:courses_app/views/auth/login_screen.dart';
 import 'package:courses_app/views/auth/singnup_screen.dart';
 import 'package:courses_app/views/chart_screen.dart';
-import 'package:courses_app/views/course_detail_screen.dart';
+import 'package:courses_app/views/course_screens/course_detail_screen.dart';
 import 'package:courses_app/views/course_screens/add_class_screen.dart';
 import 'package:courses_app/views/course_screens/add_course_screen.dart';
 import 'package:courses_app/views/home/home_screen.dart';

@@ -45,7 +45,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   addValueAuto() {
-    final user = Provider.of<UserController>(context, listen: false).userdata;
+    final user = Get.find<UserController>().userdata;
     userDpURL = user.image;
     _nameController.text = user.name;
     _dateofBirthController.text =
@@ -196,8 +196,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   _getValidText(BuildContext context) async {
-    final userprovider =
-        Provider.of<UserController>(context, listen: false).userdata;
+    final userprovider = Get.find<UserController>().userdata;
     if (_key.currentState!.validate()) {
       String urlimage = userDpURL!;
       if (imagefile != null && imagefile!.path.isNotEmpty) {

@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-class UserController extends ChangeNotifier {
+class UserController extends GetxController {
   // Call Network Firebase Service
   final _service = NetworkFirebaseService();
   dynamic _userdata;
@@ -21,7 +21,7 @@ class UserController extends ChangeNotifier {
   //  Set user Data
   setUserData(UserModel model) {
     _userdata = model;
-    notifyListeners();
+    update();
   }
 
   //  SignUp
@@ -59,7 +59,7 @@ class UserController extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
     } finally {
-      notifyListeners();
+      update();
       // LOADING SET (FALSE)
       loading.setloading(false);
     }
@@ -100,7 +100,7 @@ class UserController extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
     } finally {
-      notifyListeners();
+      update();
       // SET LOADING (FALSE)
       loading.setloading(false);
     }
@@ -120,7 +120,7 @@ class UserController extends ChangeNotifier {
     } catch (e) {
       print(e);
     } finally {
-      notifyListeners();
+      update();
       loading.setloading(false);
     }
   }
