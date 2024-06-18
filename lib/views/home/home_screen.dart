@@ -56,12 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return true;
   }
 
+  final courseprovider = Get.find<CourseController>();
   final userData = Get.find<UserController>().userdata;
+  final loadingController = Get.find<BoolSetter>();
   @override
   Widget build(BuildContext context) {
-    final courseprovider = Provider.of<CourseController>(context);
     final classprovider = Provider.of<ClassController>(context);
-    final loading = Provider.of<BoolSetter>(context).loading;
     final q = courseprovider.coursedata
         .where((element) =>
             element.coursetype!.toLowerCase() == bottonValuetype.toLowerCase())
@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Gap(20.h),
-                loading
+                loadingController.loading
                     ? const LodingTile()
                     : Column(
                         children: [

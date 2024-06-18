@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
 
   final _passwordController = TextEditingController();
-  
+
   final userController = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
@@ -88,22 +87,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Gap(40.h),
-              Consumer<BoolSetter>(
-                builder: (context, setter, child) {
-                  final bool loading = setter.loading;
-                  return Row(
-                    children: [
-                      AppButton(
-                        title: "Login",
-                        isloading: loading,
-                        onPressed: () async {
-                          await _getValidText(userController, context);
-                        },
-                        isExpanded: true,
-                      ),
-                    ],
-                  );
-                },
+              GetBuilder<BoolSetter>(
+                builder: (loadingController) => Row(
+                  children: [
+                    AppButton(
+                      title: "Login",
+                      isloading: loadingController.loading,
+                      onPressed: () async {
+                        await _getValidText(userController, context);
+                      },
+                      isExpanded: true,
+                    ),
+                  ],
+                ),
               ),
               Gap(180.h),
               Align(
@@ -128,8 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future _getValidText(
-      UserController userc, BuildContext context) async {
+  Future _getValidText(UserController userc, BuildContext context) async {
     if (_key.currentState!.validate()) {
       await userc.login(_emailController.text.trim(),
           _passwordController.text.trim(), context);

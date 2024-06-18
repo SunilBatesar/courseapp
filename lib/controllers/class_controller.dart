@@ -7,7 +7,7 @@ import 'package:courses_app/model/all_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 class ClassController extends ChangeNotifier {
   // PRIVATE CLASS DATA
@@ -19,7 +19,7 @@ class ClassController extends ChangeNotifier {
   Future<void> setClass(
       {required ClassModel model, required BuildContext context}) async {
     // LODING SET
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     try {
       // CALL POST FUNCTION AND GET REFERENCE
@@ -46,7 +46,7 @@ class ClassController extends ChangeNotifier {
   Future<void> getClass(
       {required List<CourseModel> model, required BuildContext context}) async {
     // LODING SET
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     try {
       //  FILTERDATA FUNCTION CALL AND DATA GET

@@ -1,6 +1,5 @@
 import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/components/style_seet.dart';
-import 'package:courses_app/controllers/course_controller.dart';
 import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -28,15 +26,12 @@ class _SplashScreenState extends State<SplashScreen> {
   nextScreen() async {
     if (!await rebuild()) return;
     final userProvider = Get.find<UserController>();
-    final courseProvider =
-        Provider.of<CourseController>(context, listen: false);
     final id = SPref.getSharedPrefs(SPref.userIDKey);
     Future.delayed(const Duration(milliseconds: 2), () async {
       if (id.isNotEmpty) {
         // NEW FUNCTIONS
         await userProvider.getUserDataFirebase(id, context);
-        // Courses Data Get Function Call
-        await courseProvider.getCourses(context);
+
         // OFF ALL Next Screen (App Bottom NavigationBar)
         Get.offAllNamed(RouteName.appBottomNavigationBar);
       } else {

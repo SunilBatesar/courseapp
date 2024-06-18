@@ -13,9 +13,9 @@ class CourseDetailScreen extends StatelessWidget {
   CourseDetailScreen({super.key});
   final courseId = Get.arguments["id"];
 
+    final courseprovider = Get.find<CourseController>();
   @override
   Widget build(BuildContext context) {
-    final courseprovider = Provider.of<CourseController>(context);
     final model = courseprovider.coursedata
         .firstWhere((element) => element.id == courseId.toString());
 

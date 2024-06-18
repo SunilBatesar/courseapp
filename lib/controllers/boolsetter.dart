@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class BoolSetter extends ChangeNotifier {
+class BoolSetter extends GetxController {
   // Loading
   bool _loading = false;
 
@@ -10,6 +11,6 @@ class BoolSetter extends ChangeNotifier {
   // Loading set
   setloading(bool value) {
     _loading = value;
-    notifyListeners();
+    update();
   }
 }

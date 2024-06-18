@@ -1,9 +1,7 @@
 import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/classes/main_class.dart';
 import 'package:courses_app/controllers/app_initialbinding.dart';
-import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:courses_app/controllers/class_controller.dart';
-import 'package:courses_app/controllers/course_controller.dart';
 import 'package:courses_app/firebase_options.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes.dart';
@@ -33,13 +31,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => CourseController(),
-        ),
-        ChangeNotifierProvider(
           create: (context) => ClassController(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => BoolSetter(),
         ),
       ],
       child: ScreenUtilInit(

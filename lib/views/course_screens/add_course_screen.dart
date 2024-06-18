@@ -15,7 +15,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 class AddCourseScreen extends StatefulWidget {
   final bool isbool;
@@ -51,10 +50,11 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
     setState(() {});
   }
 
+  final courseprovider = Get.find<CourseController>();
+  final loadingController = Get.find<BoolSetter>();
   @override
   Widget build(BuildContext context) {
     final user = Get.find<UserController>().userdata;
-    final courseprovider = Provider.of<CourseController>(context);
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       appBar: CustomAppbar(
@@ -186,41 +186,36 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                 },
               ),
               Gap(10.h),
-              Consumer<BoolSetter>(
-                builder: (context, value, child) {
-                  final bool loading = value.loading;
-                  return Row(
-                    children: [
-                      AppButton(
-                        title: "Save Corse",
-                        isExpanded: true,
-                        isloading: loading,
-                        onPressed: () async {
-                          final List<String> imageURLlist = [];
-                          for (var fileX in imageFileList!) {
-                            final String url = await FirebaseStorageFunction()
-                                .addimageStorage(File(fileX.path), context);
-                            imageURLlist.add(url);
-                          }
-                          final DateTime datetimenow = DateTime.now();
-                          final CourseModel coursedata = CourseModel().copyWith(
-                              name: _nameController.text.trim(),
-                              duration: _durationController.text.trim(),
-                              language: _languageController.text.trim(),
-                              price: int.parse(_priceController.text.trim()),
-                              description: _descriptionController.text.trim(),
-                              coursetype: coursetypeValue,
-                              datetime: datetimenow.toString(),
-                              images: imageURLlist,
-                              userid: user.uid);
+              Row(
+                children: [
+                  AppButton(
+                    title: "Save Corse",
+                    isExpanded: true,
+                    isloading: loadingController.loading,
+                    onPressed: () async {
+                      final List<String> imageURLlist = [];
+                      for (var fileX in imageFileList!) {
+                        final String url = await FirebaseStorageFunction()
+                            .addimageStorage(File(fileX.path), context);
+                        imageURLlist.add(url);
+                      }
+                      final DateTime datetimenow = DateTime.now();
+                      final CourseModel coursedata = CourseModel().copyWith(
+                          name: _nameController.text.trim(),
+                          duration: _durationController.text.trim(),
+                          language: _languageController.text.trim(),
+                          price: int.parse(_priceController.text.trim()),
+                          description: _descriptionController.text.trim(),
+                          coursetype: coursetypeValue,
+                          datetime: datetimenow.toString(),
+                          images: imageURLlist,
+                          userid: user.uid);
 
-                          await courseprovider.setCourse(coursedata, context);
-                        },
-                      )
-                    ],
-                  );
-                },
-              )
+                      await courseprovider.setCourse(coursedata, context);
+                    },
+                  )
+                ],
+              ),
             ],
           ),
         ),

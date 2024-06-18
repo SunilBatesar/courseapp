@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 class FirebaseStorageFunction {
   final _storage = FirebaseStorage.instance;
 
   // image Uploade FirebadseStorage and Downlode URL
   Future<String> addimageStorage(File file, BuildContext context) async {
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     String imageURL = "";
     try {
@@ -30,7 +30,7 @@ class FirebaseStorageFunction {
   //  Update File in Firebase Storage
   Future<String> imageUpdate(
       String imageURL, File file, BuildContext context) async {
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     String imageurl = "";
     try {

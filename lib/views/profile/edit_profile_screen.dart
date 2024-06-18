@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -175,19 +174,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 },
               ),
               Gap(20.h),
-              Consumer<BoolSetter>(
-                  builder: (context, value, child) => Row(
-                        children: [
-                          AppButton(
-                            title: "Save",
-                            onPressed: () {
-                              _getValidText(context);
-                            },
-                            isExpanded: true,
-                            isloading: value.loading,
-                          ),
-                        ],
-                      ))
+              GetBuilder<BoolSetter>(builder: (loadingController) {
+                return Row(
+                  children: [
+                    AppButton(
+                      title: "Save",
+                      onPressed: () {
+                        _getValidText(context);
+                      },
+                      isExpanded: true,
+                      isloading: loadingController.loading,
+                    ),
+                  ],
+                );
+              }),
             ],
           ),
         ),

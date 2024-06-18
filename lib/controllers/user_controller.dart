@@ -26,11 +26,9 @@ class UserController extends GetxController {
 
   //  SignUp
   Future signUp(Map<String, dynamic> jsondata, BuildContext context) async {
-    // CALL COURSE CONTROLLER
-    final courseprovider =
-        Provider.of<CourseController>(context, listen: false);
+
     // LODING SET
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     // GET TO JSON DATA AND SAVE USERDATA
     final UserModel usersdata = UserModel.fromjson(jsondata["data"]);
@@ -51,8 +49,6 @@ class UserController extends GetxController {
         _userdata = usersdata.copyWith(uid: id);
         // SET SHAREDPREFS (USER ID)
         await SPref.setSharedPrefs(SPref.userIDKey, id);
-        // CALL GET COURSES FUNCTION
-        courseprovider.getCourses(context);
         // OFF ALL SCREEN (APP BOTTOMNAVIGATIONBAR)
         Get.offAllNamed(RouteName.appBottomNavigationBar);
       }
@@ -68,11 +64,9 @@ class UserController extends GetxController {
   //  Login
   Future<void> login(
       String email, String password, BuildContext context) async {
-    // CALL COURSE CONTROLLER
-    final courseprovider =
-        Provider.of<CourseController>(context, listen: false);
+
     // LOADING SET
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     try {
       //  CALL GET FUNCTION AND SAVE SNAPSHOT
@@ -92,8 +86,6 @@ class UserController extends GetxController {
         await SPref.setSharedPrefs(SPref.userIDKey, usercredential.user!.uid);
         // SAVE USER DATA CONTROLLER
         _userdata = data;
-        // CALL GET COURSES FUNCTION
-        courseprovider.getCourses(context);
         // OFF ALL SCREEN (APP BOTTOMNAVIGATIONBAR)
         Get.offAllNamed(RouteName.appBottomNavigationBar);
       }
@@ -108,7 +100,7 @@ class UserController extends GetxController {
 
   //  User Data Get In FirebaseFirestore (Use User ID)
   Future<void> getUserDataFirebase(String id, BuildContext context) async {
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     try {
       final DocumentSnapshot<Map<String, dynamic>> snapshot =

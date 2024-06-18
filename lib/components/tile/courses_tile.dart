@@ -6,16 +6,17 @@ import 'package:courses_app/res/services/app_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class CoursesTile extends StatelessWidget {
   final String id;
   final Function onPressed;
-  const CoursesTile({super.key, required this.id, required this.onPressed});
+  CoursesTile({super.key, required this.id, required this.onPressed});
 
+  final courseprovider = Get.find<CourseController>();
   @override
   Widget build(BuildContext context) {
-    final courseprovider = Provider.of<CourseController>(context);
     final classprovider = Provider.of<ClassController>(context);
     final model =
         courseprovider.coursedata.firstWhere((element) => element.id == id);

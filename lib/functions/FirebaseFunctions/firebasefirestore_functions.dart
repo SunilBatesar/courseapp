@@ -4,7 +4,6 @@ import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class FirebaseFirestoreFunction {
   //  Call FirebaseFirestore
@@ -15,7 +14,7 @@ class FirebaseFirestoreFunction {
   Future<void> userDataUpdateFirestore(
       UserModel model, BuildContext context) async {
     final provider = Get.find<UserController>();
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     try {
       await _firstore

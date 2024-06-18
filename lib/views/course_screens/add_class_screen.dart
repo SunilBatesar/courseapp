@@ -41,6 +41,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
     setState(() {});
   }
 
+  final loadingController = Get.find<BoolSetter>();
   @override
   Widget build(BuildContext context) {
     final classprovider = Provider.of<ClassController>(context);
@@ -137,48 +138,43 @@ class _AddClassScreenState extends State<AddClassScreen> {
                 },
               ),
               Gap(10.h),
-              Consumer<BoolSetter>(
-                builder: (context, value, child) {
-                  final bool loading = value.loading;
-                  return Row(
-                    children: [
-                      AppButton(
-                        title: "Save Class",
-                        isExpanded: true,
-                        isloading: loading,
-                        onPressed: () async {
-                          final List<String> imageURLlist = [];
-                          for (var fileX in imageFileList!) {
-                            final String url = await FirebaseStorageFunction()
-                                .addimageStorage(File(fileX.path), context);
-                            imageURLlist.add(url);
-                          }
-                          final DateTime datetimenow = DateTime.now();
+              Row(
+                children: [
+                  AppButton(
+                    title: "Save Class",
+                    isExpanded: true,
+                    isloading: loadingController.loading,
+                    onPressed: () async {
+                      final List<String> imageURLlist = [];
+                      for (var fileX in imageFileList!) {
+                        final String url = await FirebaseStorageFunction()
+                            .addimageStorage(File(fileX.path), context);
+                        imageURLlist.add(url);
+                      }
+                      final DateTime datetimenow = DateTime.now();
 
-                          final ClassModel data = ClassModel().copyWith(
-                            name: _nameController.text.trim(),
-                            duration: _durationController.text.trim(),
-                            description: _descriptionController.text.trim(),
-                            images: imageURLlist,
-                            courseid: courseid,
-                            datetime: datetimenow.toString(),
-                          );
-                          // NEW FUNCTION
-                          await classprovider
-                              .setClass(model: data, context: context)
-                              .then((value) {
-                            print("ADD CLASS");
-                          });
+                      final ClassModel data = ClassModel().copyWith(
+                        name: _nameController.text.trim(),
+                        duration: _durationController.text.trim(),
+                        description: _descriptionController.text.trim(),
+                        images: imageURLlist,
+                        courseid: courseid,
+                        datetime: datetimenow.toString(),
+                      );
+                      // NEW FUNCTION
+                      await classprovider
+                          .setClass(model: data, context: context)
+                          .then((value) {
+                        print("ADD CLASS");
+                      });
 
-                          // OLD FUNCTION
-                          // await FirebaseFirestoreFunction()
-                          //     .setClassDataFirestore(data, context);
-                        },
-                      )
-                    ],
-                  );
-                },
-              )
+                      // OLD FUNCTION
+                      // await FirebaseFirestoreFunction()
+                      //     .setClassDataFirestore(data, context);
+                    },
+                  )
+                ],
+              ),
             ],
           ),
         ),

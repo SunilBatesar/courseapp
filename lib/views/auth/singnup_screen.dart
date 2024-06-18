@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class SingnupScreen extends StatefulWidget {
   const SingnupScreen({super.key});
@@ -35,6 +34,7 @@ class _SingnupScreenState extends State<SingnupScreen> {
   final _phonenumberController = TextEditingController();
   final _addressController = TextEditingController();
   final usercontroller = Get.find<UserController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,23 +135,20 @@ class _SingnupScreenState extends State<SingnupScreen> {
                 ),
               ),
               Gap(40.h),
-              Consumer<BoolSetter>(
-                builder: (context, setter, child) {
-                  final bool loading = setter.loading;
-                  return Row(
-                    children: [
-                      AppButton(
-                        title: "Sing Up",
-                        isloading: loading,
-                        onPressed: () {
-                          getValidText(usercontroller);
-                        },
-                        isExpanded: true,
-                      ),
-                    ],
-                  );
-                },
-              )
+              GetBuilder<BoolSetter>(builder: (loadingController) {
+                return Row(
+                  children: [
+                    AppButton(
+                      title: "Sing Up",
+                      isloading: loadingController.loading,
+                      onPressed: () {
+                        getValidText(usercontroller);
+                      },
+                      isExpanded: true,
+                    ),
+                  ],
+                );
+              }),
             ],
           ),
         ),

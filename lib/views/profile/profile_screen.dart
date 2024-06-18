@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
             LocalData.profileDataList.length,
             (index) => ListTile(
               onTap: () {
-                setTilevalue(LocalData.profileDataList[index]["id"], context);
+                setTilevalue(LocalData.profileDataList[index]["id"]);
               },
               leading: Icon(
                 LocalData.profileDataList[index]["icon"],
@@ -78,7 +78,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  setTilevalue(String value, BuildContext context) {
+  setTilevalue(String value) {
     switch (value) {
       case "profile":
         return Get.toNamed(RouteName.editProfileScreen);

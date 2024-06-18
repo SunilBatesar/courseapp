@@ -11,23 +11,23 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-class CourseController extends ChangeNotifier {
+class CourseController extends GetxController {
   List<CourseModel> _coursedata = [];
   List<CourseModel> get coursedata => _coursedata;
   setCourseData(List<CourseModel> model) {
     _coursedata = model;
-    notifyListeners();
+    update();
   }
 
   addCourseData(CourseModel model) {
     _coursedata.add(model);
-    notifyListeners();
+    update();
   }
 
   // SET COURSE FUNCTION
   Future<void> setCourse(CourseModel model, BuildContext context) async {
     // SET LOADING
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     try {
       // CALL POST FUNCTION AND SAVE REFERENCE
@@ -49,7 +49,7 @@ class CourseController extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
     } finally {
-      notifyListeners();
+      update();
       //  SET LOADING (FALSE)
       loading.setloading(false);
     }
@@ -62,7 +62,7 @@ class CourseController extends ChangeNotifier {
     // CLASS CONTROLLER CALL
     final userprovider = Get.find<UserController>();
     // SET LOADING
-    final loading = Provider.of<BoolSetter>(context, listen: false);
+    final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     try {
       // CALL FILTERDATA FUNCTION AND SAVE SNAPSHOT
@@ -83,7 +83,7 @@ class CourseController extends ChangeNotifier {
       print(e.toString());
       print("-----------");
     } finally {
-      notifyListeners();
+      update();
       // SET LOADING (FALSE)
       loading.setloading(false);
     }
