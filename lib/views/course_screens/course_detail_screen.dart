@@ -7,13 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class CourseDetailScreen extends StatelessWidget {
   CourseDetailScreen({super.key});
   final courseId = Get.arguments["id"];
 
-    final courseprovider = Get.find<CourseController>();
+  final courseprovider = Get.find<CourseController>();
   @override
   Widget build(BuildContext context) {
     final model = courseprovider.coursedata
@@ -74,7 +73,7 @@ class CourseDetailScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      UserModel.checkIsStudent(context)
+                      UserModel.checkIsStudent()
                           ? Positioned(
                               bottom: -22.sp,
                               left: 10.w,
@@ -225,7 +224,7 @@ class CourseDetailScreen extends StatelessWidget {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  UserModel.checkIsStudent(context)
+                  UserModel.checkIsStudent()
                       ? null
                       : Get.toNamed(RouteName.addCourseScreen);
                 },
@@ -239,7 +238,7 @@ class CourseDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        UserModel.checkIsStudent(context)
+                        UserModel.checkIsStudent()
                             ? "Start Learning"
                             : "Coruse Edit",
                         style: AppTextTheme.fs18Medium

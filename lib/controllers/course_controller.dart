@@ -9,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class CourseController extends GetxController {
   List<CourseModel> _coursedata = [];
@@ -25,7 +24,7 @@ class CourseController extends GetxController {
   }
 
   // SET COURSE FUNCTION
-  Future<void> setCourse(CourseModel model, BuildContext context) async {
+  Future<void> setCourse(CourseModel model) async {
     // SET LOADING
     final loading = Get.find<BoolSetter>();
     loading.setloading(true);
@@ -42,9 +41,9 @@ class CourseController extends GetxController {
             .update(maindata.apis.coursesdoc(id), {"id": reference.id});
         // SAVE COURSE DATA CONTROLLER
         _coursedata.add(model.copyWith(id: reference.id));
-        // PUSH NEXT SCREEN (ADD CLASS SCREEN) AND (ARGUMENTS : COURSE ID)
-        Navigator.pushNamed(context, RouteName.addClassScreen,
-            arguments: reference.id);
+        // GET TO NEXT SCREEN (ADD CLASS SCREEN) AND (ARGUMENTS : COURSE ID)
+        Get.toNamed(RouteName.addClassScreen,
+            arguments: {"courseid": reference.id});
       }
     } catch (e) {
       print(e.toString());
@@ -58,7 +57,7 @@ class CourseController extends GetxController {
   // GET COURSES DATA FUNCTION
   Future<void> getCourses(BuildContext context) async {
     // CLASS CONTROLLER CALL
-    final classprovider = Provider.of<ClassController>(context, listen: false);
+    final classprovider = Get.find<ClassController>();
     // CLASS CONTROLLER CALL
     final userprovider = Get.find<UserController>();
     // SET LOADING
@@ -67,7 +66,7 @@ class CourseController extends GetxController {
     try {
       // CALL FILTERDATA FUNCTION AND SAVE SNAPSHOT
       final QuerySnapshot<Map<String, dynamic>> snapshot = await filterdata(
-          checkIsStudent: UserModel.checkIsStudent(context),
+          checkIsStudent: UserModel.checkIsStudent(),
           userid: userprovider.userdata.uid);
       if (snapshot.docs.isNotEmpty) {
         // COURSES DATA CONVERT TO COURSEMODEL AND SAVE DATA
@@ -76,7 +75,7 @@ class CourseController extends GetxController {
         // SAVE COURSES DATA CONTROLLER
         _coursedata = data;
         // GET CLASS (CALL GETCLASS FUNCTION)
-        await classprovider.getClass(model: data, context: context);
+        await classprovider.getClass(model: data);
       }
     } catch (e) {
       print("-----------");

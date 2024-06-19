@@ -15,7 +15,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -59,9 +58,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final courseprovider = Get.find<CourseController>();
   final userData = Get.find<UserController>().userdata;
   final loadingController = Get.find<BoolSetter>();
+  final classprovider = Get.find<ClassController>();
   @override
   Widget build(BuildContext context) {
-    final classprovider = Provider.of<ClassController>(context);
     final q = courseprovider.coursedata
         .where((element) =>
             element.coursetype!.toLowerCase() == bottonValuetype.toLowerCase())

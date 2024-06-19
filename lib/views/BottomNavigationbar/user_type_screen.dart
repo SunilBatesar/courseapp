@@ -8,7 +8,7 @@ class UserTypeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UserModel.checkIsStudent(context)
+    return UserModel.checkIsStudent()
         ? const HomeScreen()
         : const AddCourseScreen();
   }

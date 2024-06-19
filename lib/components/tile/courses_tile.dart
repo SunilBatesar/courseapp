@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class CoursesTile extends StatelessWidget {
   final String id;
@@ -15,9 +14,9 @@ class CoursesTile extends StatelessWidget {
   CoursesTile({super.key, required this.id, required this.onPressed});
 
   final courseprovider = Get.find<CourseController>();
+  final classprovider = Get.find<ClassController>();
   @override
   Widget build(BuildContext context) {
-    final classprovider = Provider.of<ClassController>(context);
     final model =
         courseprovider.coursedata.firstWhere((element) => element.id == id);
     final classdata = classprovider.classdata
@@ -47,7 +46,7 @@ class CoursesTile extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                UserModel.checkIsStudent(context)
+                UserModel.checkIsStudent()
                     ? Positioned(
                         bottom: -22.sp,
                         left: 10.w,

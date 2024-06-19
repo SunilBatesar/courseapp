@@ -14,7 +14,6 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userprovider = Get.find<UserController>().userdata;
-
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       body: SafeArea(

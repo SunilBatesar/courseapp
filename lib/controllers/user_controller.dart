@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/controllers/boolsetter.dart';
-import 'package:courses_app/controllers/course_controller.dart';
 import 'package:courses_app/data/network/networkapi_service.dart';
 import 'package:courses_app/main.dart';
 import 'package:courses_app/model/all_model.dart';
@@ -10,7 +9,6 @@ import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class UserController extends GetxController {
   // Call Network Firebase Service
@@ -26,7 +24,6 @@ class UserController extends GetxController {
 
   //  SignUp
   Future signUp(Map<String, dynamic> jsondata, BuildContext context) async {
-
     // LODING SET
     final loading = Get.find<BoolSetter>();
     loading.setloading(true);
@@ -64,7 +61,6 @@ class UserController extends GetxController {
   //  Login
   Future<void> login(
       String email, String password, BuildContext context) async {
-
     // LOADING SET
     final loading = Get.find<BoolSetter>();
     loading.setloading(true);

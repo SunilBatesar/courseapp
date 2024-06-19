@@ -4,20 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:courses_app/main.dart';
 import 'package:courses_app/model/all_model.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-class ClassController extends ChangeNotifier {
+class ClassController extends GetxController {
   // PRIVATE CLASS DATA
   List<ClassModel> _classdata = [];
   // GET CLASS ALL DATA
   List<ClassModel> get classdata => _classdata;
 
   //  SET CLASS DATA FUNCTION
-  Future<void> setClass(
-      {required ClassModel model, required BuildContext context}) async {
+  Future<void> setClass({required ClassModel model}) async {
     // LODING SET
     final loading = Get.find<BoolSetter>();
     loading.setloading(true);
@@ -36,22 +32,21 @@ class ClassController extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
     } finally {
-      notifyListeners();
+      update();
       // SET LOADING (FALSE)
       loading.setloading(false);
     }
   }
 
   // GET CLASS DATA FUNCTION
-  Future<void> getClass(
-      {required List<CourseModel> model, required BuildContext context}) async {
+  Future<void> getClass({required List<CourseModel> model}) async {
     // LODING SET
     final loading = Get.find<BoolSetter>();
     loading.setloading(true);
     try {
       //  FILTERDATA FUNCTION CALL AND DATA GET
       final snapshot = await filterdata(
-          checkIsStudent: UserModel.checkIsStudent(context), model: model);
+          checkIsStudent: UserModel.checkIsStudent(), model: model);
       if (snapshot.docs.isNotEmpty) {
         // CONVERT CLASS DATA TO CLASSMODEL AND SAVE CLASSDATA
         final List<ClassModel> classData =
@@ -62,7 +57,7 @@ class ClassController extends ChangeNotifier {
     } catch (e) {
       rethrow;
     } finally {
-      notifyListeners();
+      update();
       // SET LOADIND (FALSE)
       loading.setloading(false);
     }

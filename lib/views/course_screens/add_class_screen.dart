@@ -13,7 +13,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 class AddClassScreen extends StatefulWidget {
   const AddClassScreen({super.key});
@@ -27,8 +26,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
   final _nameController = TextEditingController();
   final _durationController = TextEditingController();
   final _descriptionController = TextEditingController();
+  // GET ARGUMENTS
   final courseid = Get.arguments["courseid"];
-  //
+  // IMAGE PICKER AND XFILE
   final ImagePicker imagePicker = ImagePicker();
   List<XFile>? imageFileList = [];
   List<XFile>? deleteimageFileList = [];
@@ -42,9 +42,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
   }
 
   final loadingController = Get.find<BoolSetter>();
+  final classprovider = Get.find<ClassController>();
   @override
   Widget build(BuildContext context) {
-    final classprovider = Provider.of<ClassController>(context);
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       appBar: CustomAppbar(
@@ -162,9 +162,7 @@ class _AddClassScreenState extends State<AddClassScreen> {
                         datetime: datetimenow.toString(),
                       );
                       // NEW FUNCTION
-                      await classprovider
-                          .setClass(model: data, context: context)
-                          .then((value) {
+                      await classprovider.setClass(model: data).then((value) {
                         print("ADD CLASS");
                       });
 

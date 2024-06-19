@@ -211,7 +211,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           images: imageURLlist,
                           userid: user.uid);
 
-                      await courseprovider.setCourse(coursedata, context);
+                      await courseprovider.setCourse(coursedata);
                     },
                   )
                 ],

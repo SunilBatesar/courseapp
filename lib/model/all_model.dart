@@ -1,8 +1,6 @@
 // User Model
 import 'package:courses_app/utils/enums/app_enum.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import '../controllers/user_controller.dart';
 
@@ -24,7 +22,7 @@ class UserModel {
       this.profession,
       this.couresesid});
 
-  static bool checkIsStudent(BuildContext context) {
+  static bool checkIsStudent() {
     final userProvider = Get.find<UserController>();
     return userProvider.userdata.profession == Profession.Student;
   }
