@@ -4,11 +4,12 @@ import 'package:courses_app/views/BottomNavigationbar/user_type_screen.dart';
 import 'package:courses_app/views/auth/login_screen.dart';
 import 'package:courses_app/views/auth/singnup_screen.dart';
 import 'package:courses_app/views/chart_screen.dart';
-import 'package:courses_app/views/course_screens/course_detail_screen.dart';
 import 'package:courses_app/views/course_screens/add_class_screen.dart';
 import 'package:courses_app/views/course_screens/add_course_screen.dart';
+import 'package:courses_app/views/course_screens/course_detail_screen.dart';
 import 'package:courses_app/views/home/home_screen.dart';
 import 'package:courses_app/views/profile/edit_profile_screen.dart';
+import 'package:courses_app/views/profile/language_screen.dart';
 import 'package:courses_app/views/profile/profile_screen.dart';
 import 'package:courses_app/views/splash/splash_screen.dart';
 import 'package:get/get.dart';
@@ -106,6 +107,7 @@ final getXRouteList = [
   GetPage(name: RouteName.profileScreen, page: () => const ProfileScreen()),
   GetPage(
       name: RouteName.editProfileScreen, page: () => const EditProfileScreen()),
+  GetPage(name: RouteName.languageScreen, page: () =>  LanguageScreen()),
   GetPage(name: RouteName.addCourseScreen, page: () => const AddCourseScreen()),
   GetPage(name: RouteName.addClassScreen, page: () => const AddClassScreen()),
   GetPage(name: RouteName.userTypeScreen, page: () => const UserTypeScreen()),

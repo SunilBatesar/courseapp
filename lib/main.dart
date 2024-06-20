@@ -2,6 +2,8 @@ import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/classes/main_class.dart';
 import 'package:courses_app/controllers/app_initialbinding.dart';
 import 'package:courses_app/firebase_options.dart';
+import 'package:courses_app/res/i18n/app_languages.dart';
+import 'package:courses_app/res/i18n/languagedata.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
@@ -28,6 +30,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder: (context, child) => GetMaterialApp(
+        locale: Locale(AppLanguages.englishUS.toString()),
+        fallbackLocale: Locale(AppLanguages.englishUS.toString()),
+        translations: Languagedata(),
         initialBinding: AppInitialbinding(),
         initialRoute: RouteName.splashScreen,
         getPages: getXRouteList,

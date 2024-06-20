@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SPref {
   static String userIDKey = "userid";
+  static String themeKey = "theme";
   static late SharedPreferences _preferences;
   static getpref() async {
     _preferences = await SharedPreferences.getInstance();

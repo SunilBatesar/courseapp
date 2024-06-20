@@ -81,8 +81,8 @@ class ProfileScreen extends StatelessWidget {
     switch (value) {
       case "profile":
         return Get.toNamed(RouteName.editProfileScreen);
-      case "help":
-        return;
+      case "language":
+        return Get.toNamed(RouteName.languageScreen);
       case "Aboutus":
         return;
       case "Log out":

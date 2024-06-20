@@ -12,6 +12,7 @@ class RouteName {
   // ---- Profile Screen Route Name ------
   static const String profileScreen = "/ProfileScreen";
   static const String editProfileScreen = "/EditProfileScreen";
+  static const String languageScreen = "/LanguageScreen";
   // ---- Add Course Screen Route Name ------
   static const String addCourseScreen = "/AddCourseScreen";
   static const String addClassScreen = "/AddClassScreen";

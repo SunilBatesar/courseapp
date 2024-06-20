@@ -5,6 +5,7 @@ import 'package:courses_app/components/tile/loding_tile.dart';
 import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:courses_app/controllers/class_controller.dart';
 import 'package:courses_app/controllers/course_controller.dart';
+import 'package:courses_app/controllers/language_controller.dart';
 import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/data/localdata.dart';
 import 'package:courses_app/model/all_model.dart';
@@ -59,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final userData = Get.find<UserController>().userdata;
   final loadingController = Get.find<BoolSetter>();
   final classprovider = Get.find<ClassController>();
+  final languageprovider = Get.find<LanguageController>();
   @override
   Widget build(BuildContext context) {
     final q = courseprovider.coursedata
@@ -88,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Welcome \nback ${userData.name}👋",
+                      "${"welcome".tr} ${userData.name}👋",
                       style: AppTextTheme.fs20Medium,
                     ),
                     Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LocalData {
   static List<Map<String, dynamic>> filterlist = [
@@ -18,13 +19,15 @@ class LocalData {
   ];
   // Create Profile Tile Data
   static List<Map<String, dynamic>> profileDataList = [
-    {"title": "My Profile", "icon": Icons.person, "id": "profile"},
+    {"title": "MyProfile".tr, "icon": Icons.person, "id": "profile"},
+    {"title": "Theme".tr, "icon": Icons.dark_mode_sharp, "id": "theme"},
+    {"title": "Language".tr, "icon": Icons.language, "id": "language"},
     {
-      "title": "Help Support",
+      "title": "HelpSupport".tr,
       "icon": Icons.question_mark_rounded,
       "id": "help"
     },
-    {"title": "About us", "icon": Icons.error_outlined, "id": "Aboutus"},
-    {"title": "Log out", "icon": Icons.exit_to_app_rounded, "id": "Log out"},
+    {"title": "Aboutus".tr, "icon": Icons.error_outlined, "id": "Aboutus"},
+    {"title": "Logout".tr, "icon": Icons.exit_to_app_rounded, "id": "Log out"},
   ];
 }
