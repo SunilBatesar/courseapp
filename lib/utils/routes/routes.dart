@@ -11,6 +11,7 @@ import 'package:courses_app/views/home/home_screen.dart';
 import 'package:courses_app/views/profile/edit_profile_screen.dart';
 import 'package:courses_app/views/profile/language_screen.dart';
 import 'package:courses_app/views/profile/profile_screen.dart';
+import 'package:courses_app/views/profile/theme_screen.dart';
 import 'package:courses_app/views/splash/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -107,7 +108,8 @@ final getXRouteList = [
   GetPage(name: RouteName.profileScreen, page: () => const ProfileScreen()),
   GetPage(
       name: RouteName.editProfileScreen, page: () => const EditProfileScreen()),
-  GetPage(name: RouteName.languageScreen, page: () =>  LanguageScreen()),
+  GetPage(name: RouteName.themeScreen, page: () => ThemeScreen()),
+  GetPage(name: RouteName.languageScreen, page: () => LanguageScreen()),
   GetPage(name: RouteName.addCourseScreen, page: () => const AddCourseScreen()),
   GetPage(name: RouteName.addClassScreen, page: () => const AddClassScreen()),
   GetPage(name: RouteName.userTypeScreen, page: () => const UserTypeScreen()),

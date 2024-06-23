@@ -36,6 +36,9 @@ class MyApp extends StatelessWidget {
         initialBinding: AppInitialbinding(),
         initialRoute: RouteName.splashScreen,
         getPages: getXRouteList,
+        theme: ThemeData.light(),
+        themeMode: ThemeMode.light,
+        darkTheme: ThemeData.dark(),
       ),
       designSize: Size(AppConfig.screenWidth, AppConfig.screenHeight),
     );

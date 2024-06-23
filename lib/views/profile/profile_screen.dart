@@ -81,10 +81,10 @@ class ProfileScreen extends StatelessWidget {
     switch (value) {
       case "profile":
         return Get.toNamed(RouteName.editProfileScreen);
+      case "theme":
+        return Get.toNamed(RouteName.themeScreen);
       case "language":
         return Get.toNamed(RouteName.languageScreen);
-      case "Aboutus":
-        return;
       case "Log out":
         return Get.find<UserController>().logout();
       default:
