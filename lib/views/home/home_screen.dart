@@ -8,11 +8,10 @@ import 'package:courses_app/controllers/course_controller.dart';
 import 'package:courses_app/controllers/language_controller.dart';
 import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/data/localdata.dart';
-import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/res/services/appconfig.dart';
+import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -27,33 +26,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final fonts = AppTextTheme();
   int buttonIndex = 0;
-  String bottonValuetype = "";
-  String searchOnchanged = "";
-  List<CourseModel> filterdataList = [];
 
   @override
   void initState() {
     super.initState();
-    getdata();
+    data();
   }
 
-  getdata() async {
-    if (!await rebuild()) return;
-    bottonValuetype = LocalData.filterlist.first["type"];
-    setState(() {});
-  }
-
-  Future<bool> rebuild() async {
-    if (!mounted) return false;
-    // if there's a current frame,
-    if (SchedulerBinding.instance.schedulerPhase != SchedulerPhase.idle) {
-      // wait for the end of that frame.
-      await SchedulerBinding.instance.endOfFrame;
-      if (!mounted) return false;
-    }
-
-    setState(() {});
-    return true;
+  data() async {
+    await courseprovider.setSearchfilterdataList();
   }
 
   final courseprovider = Get.find<CourseController>();
@@ -63,19 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final languageprovider = Get.find<LanguageController>();
   @override
   Widget build(BuildContext context) {
-    final q = courseprovider.coursedata
-        .where((element) =>
-            element.coursetype!.toLowerCase() == bottonValuetype.toLowerCase())
-        .toList();
-    filterdataList = searchOnchanged.isEmpty
-        ? q
-        : q
-            .where((e) => e.name!
-                .toLowerCase()
-                .trim()
-                .contains(searchOnchanged.toLowerCase().trim()))
-            .toList();
-
     return Scaffold(
       backgroundColor: AppColor.antiFlashWhite,
       body: SafeArea(
@@ -86,74 +54,86 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "${"welcome".tr} ${userData.name}👋",
-                      style: AppTextTheme.fs20Medium,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(2.sp),
-                      height: 50.sp,
-                      width: 50.sp,
-                      decoration: const BoxDecoration(
-                          color: AppColor.white, shape: BoxShape.circle),
-                      child: userData.image.isNotEmpty
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(1000),
-                              child: Image.network(
-                                userData.image,
-                                fit: BoxFit.cover,
-                              ))
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(1000),
-                              child: Image.asset(
-                                AppConfig.applogo,
-                                fit: BoxFit.cover,
-                              )),
-                    ),
-                  ],
-                ),
+                userData.status == DataStatus.LOADIND
+                    ? const SizedBox()
+                    : userData.status == DataStatus.ERROR
+                        ? const SizedBox()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${"welcome".tr} ${userData.data!.name}👋",
+                                style: AppTextTheme.fs20Medium,
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(2.sp),
+                                height: 50.sp,
+                                width: 50.sp,
+                                decoration: const BoxDecoration(
+                                    color: AppColor.white,
+                                    shape: BoxShape.circle),
+                                child: userData.data!.image.isNotEmpty
+                                    ? ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(1000),
+                                        child: Image.network(
+                                          userData.data!.image,
+                                          fit: BoxFit.cover,
+                                        ))
+                                    : ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(1000),
+                                        child: Image.asset(
+                                          AppConfig.applogo,
+                                          fit: BoxFit.cover,
+                                        )),
+                              ),
+                            ],
+                          ),
                 Gap(30.h),
-                SearchTextField(
-                  text: "Figma...",
-                  icon: Icons.search,
-                  onchanged: (v) {
-                    setState(() {
-                      searchOnchanged = v;
-                    });
-                  },
+                GetBuilder<CourseController>(
+                  builder: (controller) => SearchTextField(
+                    text: "Figma...",
+                    icon: Icons.search,
+                    onchanged: (v) {
+                      setState(() {
+                        controller.setSearchOnchanged(v);
+                        controller.setSearchfilterdataList();
+                      });
+                    },
+                  ),
                 ),
                 Gap(10.h),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(
-                        LocalData.filterlist.length,
-                        (index) => Padding(
-                              padding: EdgeInsets.only(right: 15.w),
-                              child: TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      buttonIndex = index;
-                                      bottonValuetype =
-                                          (LocalData.filterlist[index]["type"])
-                                              .toString();
-                                    });
-                                  },
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: buttonIndex == index
-                                          ? AppColor.raisinBlack
-                                          : AppColor.white),
-                                  child: Text(
-                                    LocalData.filterlist[index]["title"],
-                                    style: AppTextTheme.fs14Medium.copyWith(
-                                        color: buttonIndex == index
-                                            ? AppColor.white
-                                            : AppColor.raisinBlack),
-                                  )),
-                            )),
+                GetBuilder<CourseController>(
+                  builder: (controller) => SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                          LocalData.filterlist.length,
+                          (index) => Padding(
+                                padding: EdgeInsets.only(right: 15.w),
+                                child: TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        buttonIndex = index;
+                                        controller.setHomeFilterData(LocalData
+                                            .filterlist[index]["type"]);
+                                        controller.setSearchfilterdataList();
+                                      });
+                                    },
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: buttonIndex == index
+                                            ? AppColor.raisinBlack
+                                            : AppColor.white),
+                                    child: Text(
+                                      LocalData.filterlist[index]["title"],
+                                      style: AppTextTheme.fs14Medium.copyWith(
+                                          color: buttonIndex == index
+                                              ? AppColor.white
+                                              : AppColor.raisinBlack),
+                                    )),
+                              )),
+                    ),
                   ),
                 ),
                 Gap(20.h),
@@ -175,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(20.r),
                                     color: AppColor.white),
                                 child: Text(
-                                  "${filterdataList.length} Class",
+                                  "${courseprovider.searchfilterdataList.length} Class",
                                   style: AppTextTheme.fs14Medium
                                       .copyWith(color: AppColor.frenchGray),
                                 ),
@@ -183,31 +163,42 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           Gap(15.h),
-                          filterdataList.isNotEmpty
-                              ? ListView.builder(
-                                  itemCount: filterdataList.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) => Padding(
-                                    padding: EdgeInsets.only(bottom: 15.h),
-                                    child: CoursesTile(
-                                      onPressed: () {
-                                        Get.toNamed(
-                                            RouteName.courseDetailScreen,
-                                            arguments: {
-                                              "id": filterdataList[index].id
-                                            });
-                                      },
-                                      id: filterdataList[index].id!,
+                          GetBuilder<CourseController>(builder: (controller) {
+                            // print("--------------");
+                            // print(controller.homeFilterData);
+                            // print(controller.searchfilterdataList.length);
+                            // print("--------------");
+                            return controller.searchfilterdataList.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount:
+                                        controller.searchfilterdataList.length,
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) => Padding(
+                                      padding: EdgeInsets.only(bottom: 15.h),
+                                      child: CoursesTile(
+                                        onPressed: () {
+                                          Get.toNamed(
+                                              RouteName.courseDetailScreen,
+                                              arguments: {
+                                                "id": controller
+                                                    .searchfilterdataList[index]
+                                                    .id
+                                              });
+                                        },
+                                        id: controller
+                                            .searchfilterdataList[index].id!,
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : Center(
-                                  child: Text(
-                                    "No Class",
-                                    style: AppTextTheme.fs20SemiBold,
-                                  ),
-                                ),
+                                  )
+                                : Center(
+                                    child: Text(
+                                      "No Class",
+                                      style: AppTextTheme.fs20SemiBold,
+                                    ),
+                                  );
+                          })
                         ],
                       ),
               ],

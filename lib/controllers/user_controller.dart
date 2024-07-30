@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:courses_app/Preferences/sharedpreferences.dart';
-import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:courses_app/data/network/networkapi_service.dart';
 import 'package:courses_app/main.dart';
 import 'package:courses_app/model/all_model.dart';
+import 'package:courses_app/response/data_response.dart';
 import 'package:courses_app/utils/enums/app_enum.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,20 +13,17 @@ import 'package:get/get.dart';
 class UserController extends GetxController {
   // Call Network Firebase Service
   final _service = NetworkFirebaseService();
-  dynamic _userdata;
+  DataResponse<UserModel> _userdata = DataResponse.loading();
   // Get User Data
-  UserModel get userdata => _userdata;
+  DataResponse<UserModel> get userdata => _userdata;
   //  Set user Data
-  setUserData(UserModel model) {
+  setUserData(DataResponse<UserModel> model) {
     _userdata = model;
     update();
   }
 
   //  SignUp
   Future signUp(Map<String, dynamic> jsondata, BuildContext context) async {
-    // LODING SET
-    final loading = Get.find<BoolSetter>();
-    loading.setloading(true);
     // GET TO JSON DATA AND SAVE USERDATA
     final UserModel usersdata = UserModel.fromjson(jsondata["data"]);
     try {
@@ -43,7 +40,7 @@ class UserController extends GetxController {
         await maindata.networkFirebaseService.post(
             maindata.apis.userdoc(id), usersdata.copyWith(uid: id).tomap());
         // SAVE USER DATA CONTROLLER
-        _userdata = usersdata.copyWith(uid: id);
+        setUserData(DataResponse.completed(usersdata.copyWith(uid: id)));
         // SET SHAREDPREFS (USER ID)
         await SPref.setSharedPrefs(SPref.userIDKey, id);
         // OFF ALL SCREEN (APP BOTTOMNAVIGATIONBAR)
@@ -51,19 +48,15 @@ class UserController extends GetxController {
       }
     } catch (e) {
       print(e.toString());
+      setUserData(DataResponse.error(e.toString()));
     } finally {
       update();
-      // LOADING SET (FALSE)
-      loading.setloading(false);
     }
   }
 
   //  Login
   Future<void> login(
       String email, String password, BuildContext context) async {
-    // LOADING SET
-    final loading = Get.find<BoolSetter>();
-    loading.setloading(true);
     try {
       //  CALL GET FUNCTION AND SAVE SNAPSHOT
       final snapshot = await maindata.networkFirebaseService
@@ -81,35 +74,32 @@ class UserController extends GetxController {
         // SET SHAREDPREFS (USER ID)
         await SPref.setSharedPrefs(SPref.userIDKey, usercredential.user!.uid);
         // SAVE USER DATA CONTROLLER
-        _userdata = data;
+        setUserData(DataResponse.completed(data));
         // OFF ALL SCREEN (APP BOTTOMNAVIGATIONBAR)
         Get.offAllNamed(RouteName.appBottomNavigationBar);
       }
     } catch (e) {
       print(e.toString());
+      setUserData(DataResponse.error(e.toString()));
     } finally {
       update();
-      // SET LOADING (FALSE)
-      loading.setloading(false);
     }
   }
 
   //  User Data Get In FirebaseFirestore (Use User ID)
   Future<void> getUserDataFirebase(String id, BuildContext context) async {
-    final loading = Get.find<BoolSetter>();
-    loading.setloading(true);
     try {
       final DocumentSnapshot<Map<String, dynamic>> snapshot =
           await _service.get(maindata.apis.userdoc(id));
       if (snapshot.id.isNotEmpty) {
         final UserModel data = UserModel.fromjson(snapshot.data()!);
-        _userdata = data;
+        setUserData(DataResponse.completed(data));
       }
     } catch (e) {
       print(e);
+      setUserData(DataResponse.error(e.toString()));
     } finally {
       update();
-      loading.setloading(false);
     }
   }
 

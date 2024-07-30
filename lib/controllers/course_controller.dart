@@ -2,12 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:courses_app/controllers/class_controller.dart';
 import 'package:courses_app/controllers/user_controller.dart';
+import 'package:courses_app/data/localdata.dart';
 import 'package:courses_app/main.dart';
 import 'package:courses_app/model/all_model.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class CourseController extends GetxController {
@@ -55,10 +53,10 @@ class CourseController extends GetxController {
   }
 
   // GET COURSES DATA FUNCTION
-  Future<void> getCourses(BuildContext context) async {
+  Future<void> getCourses() async {
     // CLASS CONTROLLER CALL
     final classprovider = Get.find<ClassController>();
-    // CLASS CONTROLLER CALL
+    // USER CONTROLLER CALL
     final userprovider = Get.find<UserController>();
     // SET LOADING
     final loading = Get.find<BoolSetter>();
@@ -67,7 +65,7 @@ class CourseController extends GetxController {
       // CALL FILTERDATA FUNCTION AND SAVE SNAPSHOT
       final QuerySnapshot<Map<String, dynamic>> snapshot = await filterdata(
           checkIsStudent: UserModel.checkIsStudent(),
-          userid: userprovider.userdata.uid);
+          userid: userprovider.userdata.data!.uid);
       if (snapshot.docs.isNotEmpty) {
         // COURSES DATA CONVERT TO COURSEMODEL AND SAVE DATA
         final data =
@@ -78,9 +76,9 @@ class CourseController extends GetxController {
         await classprovider.getClass(model: data);
       }
     } catch (e) {
-      print("-----------");
+      print("-----Get Courses Function ERROR------");
       print(e.toString());
-      print("-----------");
+      print("-----Get Courses Function ERROR------");
     } finally {
       update();
       // SET LOADING (FALSE)
@@ -108,5 +106,42 @@ class CourseController extends GetxController {
     } catch (e) {
       rethrow;
     }
+  }
+
+//  Filter Data
+  String _homeFilterData = LocalData.filterlist.first["type"];
+  String get homeFilterData => _homeFilterData;
+
+  setHomeFilterData(String value) {
+    _homeFilterData = value;
+    update();
+  }
+
+  // Search On Changed
+  String _searchOnchanged = "";
+  String get searchOnchanged => _searchOnchanged;
+
+  setSearchOnchanged(String value) {
+    _searchOnchanged = value;
+    update();
+  }
+
+  List<CourseModel> _searchfilterdataList = [];
+  List<CourseModel> get searchfilterdataList => _searchfilterdataList;
+
+  Future setSearchfilterdataList() async {
+    final q = _coursedata
+        .where((element) =>
+            element.coursetype!.toLowerCase() == _homeFilterData.toLowerCase())
+        .toList();
+    _searchfilterdataList = searchOnchanged.isEmpty
+        ? q
+        : q
+            .where((e) => e.name!
+                .toLowerCase()
+                .trim()
+                .contains(searchOnchanged.toLowerCase().trim()))
+            .toList();
+    update();
   }
 }

@@ -209,7 +209,7 @@ class _AddCourseScreenState extends State<AddCourseScreen> {
                           coursetype: coursetypeValue,
                           datetime: datetimenow.toString(),
                           images: imageURLlist,
-                          userid: user.uid);
+                          userid: user.data!.uid);
 
                       await courseprovider.setCourse(coursedata);
                     },

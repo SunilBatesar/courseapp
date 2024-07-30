@@ -44,8 +44,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   addValueAuto() {
-    final user = Get.find<UserController>().userdata;
-    userDpURL = user.image;
+    final user = Get.find<UserController>().userdata.data;
+    userDpURL = user!.image;
     _nameController.text = user.name;
     _dateofBirthController.text =
         user.dateofBirth.isEmpty ? "" : user.dateofBirth;
@@ -209,7 +209,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         }
       }
       FirebaseFirestoreFunction().userDataUpdateFirestore(
-          userprovider.copyWith(
+          userprovider.data!.copyWith(
             name: _nameController.text.trim(),
             dateofBirth: _dateofBirthController.text.trim(),
             phonenumber: int.parse(_phonenumberController.text.trim()),

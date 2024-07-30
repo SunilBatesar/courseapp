@@ -24,7 +24,7 @@ class UserModel {
 
   static bool checkIsStudent() {
     final userProvider = Get.find<UserController>();
-    return userProvider.userdata.profession == Profession.Student;
+    return userProvider.userdata.data!.profession == Profession.Student;
   }
 
   // tomap

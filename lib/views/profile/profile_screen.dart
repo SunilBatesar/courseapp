@@ -26,9 +26,9 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(1000),
-                      child: controller.userdata.image.isNotEmpty
+                      child: controller.userdata.data!.image.isNotEmpty
                           ? Image.network(
-                              controller.userdata.image,
+                              controller.userdata.data!.image,
                               height: 100.sp,
                               width: 100.sp,
                               fit: BoxFit.cover,
@@ -41,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
                             )),
                   Gap(20.h),
                   Text(
-                    controller.userdata.name,
+                    controller.userdata.data!.name,
                     style: AppTextTheme.fs20Medium,
                   ),
                 ],

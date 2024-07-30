@@ -1,5 +1,4 @@
 import 'package:courses_app/components/style_seet.dart';
-import 'package:courses_app/controllers/course_controller.dart';
 import 'package:courses_app/views/BottomNavigationbar/user_type_screen.dart';
 import 'package:courses_app/views/chart_screen.dart';
 import 'package:courses_app/views/home/home_screen.dart';
@@ -7,7 +6,6 @@ import 'package:courses_app/views/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({super.key});
@@ -34,7 +32,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   data() async {
     if (!await rebuild()) return;
     // Courses Data Get Function Call
-    await Get.find<CourseController>().getCourses(context);
+    // await Get.find<CourseController>().getCourses();
   }
 
   Future<bool> rebuild() async {

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:courses_app/controllers/boolsetter.dart';
 import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/model/all_model.dart';
+import 'package:courses_app/response/data_response.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +24,7 @@ class FirebaseFirestoreFunction {
           .update(model.tomap())
           .then(
         (value) {
-          provider.setUserData(model);
+          provider.setUserData(DataResponse.completed(model));
         },
       );
     } catch (e) {

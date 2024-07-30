@@ -1,5 +1,6 @@
 import 'package:courses_app/Preferences/sharedpreferences.dart';
 import 'package:courses_app/components/style_seet.dart';
+import 'package:courses_app/controllers/course_controller.dart';
 import 'package:courses_app/controllers/user_controller.dart';
 import 'package:courses_app/res/services/appconfig.dart';
 import 'package:courses_app/utils/routes/routes_name.dart';
@@ -31,6 +32,8 @@ class _SplashScreenState extends State<SplashScreen> {
       if (id.isNotEmpty) {
         // NEW FUNCTIONS
         await userProvider.getUserDataFirebase(id, context);
+        var d = Get.find<CourseController>();
+        await d.getCourses();
 
         // OFF ALL Next Screen (App Bottom NavigationBar)
         Get.offAllNamed(RouteName.appBottomNavigationBar);

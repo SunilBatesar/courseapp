@@ -50,8 +50,6 @@ class AppTextTheme {
       GoogleFonts.poppins(fontSize: 30.sp, fontWeight: FontWeight.w600);
 
   //-------- Bold ------
-  static TextStyle fs25Bold = GoogleFonts.poppins(
-    fontSize: 25.sp,
-    fontWeight: FontWeight.w700,
-  );
+  static TextStyle fs25Bold =
+      GoogleFonts.poppins(fontSize: 25.sp, fontWeight: FontWeight.w700);
 }
